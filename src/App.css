@@ -1,0 +1,21 @@
+.App {
+  min-height: 100vh;
+}
+
+.App-header {
+  min-height: 48px;
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--chakra-colors-blue-500);
+  color: #fff;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  font-weight: bold;
+}
+
+.App-contents {
+  padding: 16px 24px;
+}
