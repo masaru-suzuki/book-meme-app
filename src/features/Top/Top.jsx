@@ -3,12 +3,17 @@ import BookRoot from '../book/Top';
 import BookAdd from '../book/BookAdd';
 import RandomRoot from '../Random/Top';
 import ReviewRoot from '../Review/Top';
-import { Grid, Stack, Button, IconButton, ButtonGroup } from '@chakra-ui/react';
-import { AddIcon, EditIcon } from '@chakra-ui/icons';
+import { Grid, Stack, Button, IconButton, Icon } from '@chakra-ui/react';
+import { HiOutlineBookOpen } from 'react-icons/hi';
+import { BiListPlus } from 'react-icons/bi';
+
+const CustomListIcon = ()=><Icon as={BiListPlus} width="24px" height="24px" opacity="0.8"/>
+const CustomBookIcon = ()=><Icon as={HiOutlineBookOpen} width="24px" height="24px" opacity="0.8"/>
 
 const Top = () => {
   const [rootFlag, setRootFlag] = useState('');
   const backToTop = () => setRootFlag('');
+
 
   return (
     <>
@@ -27,7 +32,7 @@ const Top = () => {
               h={14}
               aria-label="Search database"
               colorScheme={'gray'}
-              icon={<EditIcon w={4} h={4} />}
+              icon={<CustomListIcon />}
               onClick={() => setRootFlag('edit')}
             />
             <IconButton
@@ -36,7 +41,7 @@ const Top = () => {
               h={14}
               aria-label="Search database"
               colorScheme={'gray'}
-              icon={<AddIcon w={4} h={4} />}
+              icon={<CustomBookIcon />}
               onClick={() => setRootFlag('add')}
             />
           </Stack>
