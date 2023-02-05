@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import BookRoot from '../book/Top';
 import BookAdd from '../book/BookAdd';
+import Register from '../book/Register';
 import RandomRoot from '../Random/Top';
 import ReviewRoot from '../Review/Top';
 import { Grid, Stack, Button, IconButton, Icon } from '@chakra-ui/react';
