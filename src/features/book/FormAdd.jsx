@@ -9,11 +9,16 @@ import {
   VStack,
   StackDivider,
   Input,
+  Icon,
+  IconButton,
   Button,
   Grid,
   Flex,
   Box,
 } from '@chakra-ui/react';
+import { HiOutlineTrash } from 'react-icons/hi';
+
+const CustomListIcon = () => <Icon as={HiOutlineTrash} width="5" height="5" opacity="0.8" />;
 
 const FormAdd = () => {
   const dispatch = useDispatch();
@@ -93,7 +98,7 @@ const FormAdd = () => {
             <Input
               id="learned1"
               variant="filled"
-              placeholder="learned1"
+              placeholder="目的その1"
               {...register('learned1', {
                 required: '学びたいことは3つ記載してください',
               })}
@@ -104,7 +109,7 @@ const FormAdd = () => {
             <Input
               id="learned2"
               variant="filled"
-              placeholder="learned2"
+              placeholder="目的その2"
               {...register('learned2', {
                 required: '学びたいことは3つ記載してください',
               })}
@@ -115,7 +120,7 @@ const FormAdd = () => {
             <Input
               id="learned3"
               variant="filled"
-              placeholder="learned3"
+              placeholder="目的その3"
               {...register('learned3', {
                 required: '学びたいことは3つ記載してください',
               })}
@@ -130,14 +135,17 @@ const FormAdd = () => {
                 name={`advancedPurpose.${index}`}
                 control={control}
               />
-              <button type="button" onClick={() => remove(index)}>
-                Delete
-              </button>
+              <IconButton
+                variant={'ghost'}
+                colorScheme={'gray'}
+                icon={<CustomListIcon />}
+                onClick={() => remove(index)}
+              />
             </Flex>
           ))}
-          <button type="button" onClick={() => append('')}>
-            append
-          </button>
+          <Button type="button" colorScheme="gray" onClick={() => append([''])} size="sm" placeSelf={'center'}>
+            追加する
+          </Button>
         </Grid>
 
         <Button mt={4} colorScheme="linkedin" isLoading={isSubmitting} type="submit">
