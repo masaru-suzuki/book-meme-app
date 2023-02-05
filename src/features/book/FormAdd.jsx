@@ -1,8 +1,19 @@
 import { useDispatch } from 'react-redux';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { add } from './store/modules/register';
 import { nanoid } from 'nanoid';
-import { FormControl, FormLabel, FormErrorMessage, VStack, StackDivider, Input, Button } from '@chakra-ui/react';
+import {
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  VStack,
+  StackDivider,
+  Input,
+  Button,
+  Grid,
+  Flex,
+  Box,
+} from '@chakra-ui/react';
 
 const FormAdd = () => {
   const dispatch = useDispatch();
@@ -11,6 +22,8 @@ const FormAdd = () => {
     handleSubmit,
     register,
     watch,
+    reset,
+    control,
     formState: { errors, isSubmitting },
   } = useForm();
 
@@ -19,17 +32,29 @@ const FormAdd = () => {
     const newBook = {
       id: nanoid(),
       title: values.title,
-      purpose: values.purpose,
-      learned: [values.learned1, values.learned2, values.learned3],
+      reason: values.reason,
+      purpose: [values.learned1, values.learned2, values.learned3, ...values.advancedPurpose],
     };
-    dispatch(add(newBook));
-    e.target.reset();
+    console.log(newBook);
+    // dispatch(add(newBook));
+    reset();
+    remove();
   }
+
+  // Formの動的処理
+  const { fields, append, remove } = useFieldArray({ control, name: 'advancedPurpose' });
+
+  // 学びたいことを埋めた個数
+  // const learnPoint = [!!watch('learned2'), !!watch('learned2'), !!watch('learned3')].filter(
+  //   (val) => val === true
+  // ).length;
+  // console.log(learnPoint);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <VStack divider={<StackDivider borderColor="gray.100" />} spacing={5} align="stretch">
         <Input type="hidden" id="id" defaultValue={nanoid} {...register('id')} />
+
         <FormControl isInvalid={errors.title}>
           <FormLabel htmlFor="title" fontSize={'xs'} color="gray.700">
             タイトル
@@ -44,62 +69,77 @@ const FormAdd = () => {
           />
           <FormErrorMessage>{errors.title && errors.title.message}</FormErrorMessage>
         </FormControl>
-        <FormControl isInvalid={errors.purpose}>
-          <FormLabel htmlFor="purpose" fontSize={'xs'} color="gray.700">
-            この本を読むと、何が分かりそうか？
+
+        <FormControl isInvalid={errors.reason}>
+          <FormLabel htmlFor="reason" fontSize={'xs'} color="gray.700">
+            何のためにこの本を読むのか
           </FormLabel>
           <Input
-            id="purpose"
+            id="reason"
             variant="filled"
-            placeholder="purpose"
-            {...register('purpose', {
+            placeholder="reason"
+            {...register('reason', {
               required: '分かりそうなことは必須です',
             })}
           />
-          <FormErrorMessage>{errors.purpose && errors.purpose.message}</FormErrorMessage>
+          <FormErrorMessage>{errors.reason && errors.reason.message}</FormErrorMessage>
         </FormControl>
-        <FormControl isInvalid={errors.learned1}>
-          <FormLabel htmlFor="learned1" fontSize={'xs'} color="gray.700">
-            この本から学びたいこと1
-          </FormLabel>
-          <Input
-            id="learned1"
-            variant="filled"
-            placeholder="learned1"
-            {...register('learned1', {
-              required: '学びたいことは3つ記載してください',
-            })}
-          />
-          <FormErrorMessage>{errors.learned1 && errors.learned1.message}</FormErrorMessage>
-        </FormControl>
-        <FormControl isInvalid={errors.learned2}>
-          <FormLabel htmlFor="learned2" fontSize={'xs'} color="gray.700">
-            この本から学びたいこと2
-          </FormLabel>
-          <Input
-            id="learned2"
-            variant="filled"
-            placeholder="learned2"
-            {...register('learned2', {
-              required: '学びたいことは3つ記載してください',
-            })}
-          />
-          <FormErrorMessage>{errors.learned2 && errors.learned2.message}</FormErrorMessage>
-        </FormControl>
-        <FormControl isInvalid={errors.learned3}>
-          <FormLabel htmlFor="learned3" fontSize={'xs'} color="gray.700">
-            この本から学びたいこと3
-          </FormLabel>
-          <Input
-            id="learned3"
-            variant="filled"
-            placeholder="learned3"
-            {...register('learned3', {
-              required: '学びたいことは3つ記載してください',
-            })}
-          />
-          <FormErrorMessage>{errors.learned3 && errors.learned3.message}</FormErrorMessage>
-        </FormControl>
+        <Grid gap="3">
+          {/* TODO: purposeとadvancedPurposeを結合する */}
+          <FormControl isInvalid={errors.learned1}>
+            <FormLabel htmlFor="learned1" fontSize={'xs'} color="gray.700">
+              この本から学びたいこと
+            </FormLabel>
+            <Input
+              id="learned1"
+              variant="filled"
+              placeholder="learned1"
+              {...register('learned1', {
+                required: '学びたいことは3つ記載してください',
+              })}
+            />
+            <FormErrorMessage>{errors.learned1 && errors.learned1.message}</FormErrorMessage>
+          </FormControl>
+          <FormControl isInvalid={errors.learned2}>
+            <Input
+              id="learned2"
+              variant="filled"
+              placeholder="learned2"
+              {...register('learned2', {
+                required: '学びたいことは3つ記載してください',
+              })}
+            />
+            <FormErrorMessage>{errors.learned2 && errors.learned2.message}</FormErrorMessage>
+          </FormControl>
+          <FormControl isInvalid={errors.learned3}>
+            <Input
+              id="learned3"
+              variant="filled"
+              placeholder="learned3"
+              {...register('learned3', {
+                required: '学びたいことは3つ記載してください',
+              })}
+            />
+            <FormErrorMessage>{errors.learned3 && errors.learned3.message}</FormErrorMessage>
+          </FormControl>
+
+          {fields.map((item, index) => (
+            <Flex key={item.id}>
+              <Controller
+                render={({ field }) => <Input variant="filled" placeholder={`目的その${index + 4}`} {...field} />}
+                name={`advancedPurpose.${index}`}
+                control={control}
+              />
+              <button type="button" onClick={() => remove(index)}>
+                Delete
+              </button>
+            </Flex>
+          ))}
+          <button type="button" onClick={() => append('')}>
+            append
+          </button>
+        </Grid>
+
         <Button mt={4} colorScheme="linkedin" isLoading={isSubmitting} type="submit">
           登録する
         </Button>
