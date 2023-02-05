@@ -12,11 +12,14 @@ import {
   Icon,
   IconButton,
   Button,
+  CircularProgress,
+  CircularProgressLabel,
   Grid,
   Flex,
   Box,
 } from '@chakra-ui/react';
 import { HiOutlineTrash } from 'react-icons/hi';
+import { useEffect, useState } from 'react';
 
 const CustomListIcon = () => <Icon as={HiOutlineTrash} width="5" height="5" opacity="0.8" />;
 
@@ -34,11 +37,12 @@ const FormAdd = () => {
 
   function onSubmit(values, e) {
     // TODO: 登録！みたいなFBあったらいいな。Chakra UIでできるかも
+    console.log(e.target.value);
     const newBook = {
       id: nanoid(),
       title: values.title,
       reason: values.reason,
-      purpose: [values.learned1, values.learned2, values.learned3, ...values.advancedPurpose],
+      purpose: [values.purpose1, values.purpose2, values.purpose3, ...values.advancedPurpose],
     };
     console.log(newBook);
     // dispatch(add(newBook));
@@ -50,10 +54,13 @@ const FormAdd = () => {
   const { fields, append, remove } = useFieldArray({ control, name: 'advancedPurpose' });
 
   // 学びたいことを埋めた個数
-  // const learnPoint = [!!watch('learned2'), !!watch('learned2'), !!watch('learned3')].filter(
-  //   (val) => val === true
-  // ).length;
-  // console.log(learnPoint);
+  const [learnPoint, setLearnPoint] = useState(0);
+  const watchAllFields = watch(['purpose1', 'purpose2', 'purpose3']);
+
+  useEffect(() => {
+    const learnPoint = watchAllFields.filter((val) => val !== '').length;
+    setLearnPoint(learnPoint);
+  }, [watchAllFields]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -90,42 +97,46 @@ const FormAdd = () => {
           <FormErrorMessage>{errors.reason && errors.reason.message}</FormErrorMessage>
         </FormControl>
         <Grid gap="3">
-          {/* TODO: purposeとadvancedPurposeを結合する */}
-          <FormControl isInvalid={errors.learned1}>
-            <FormLabel htmlFor="learned1" fontSize={'xs'} color="gray.700">
-              この本から学びたいこと
-            </FormLabel>
+          <FormControl isInvalid={errors.purpose1}>
+            <Flex justifyContent={'space-between'} alignItems="center" mb={'4'}>
+              <FormLabel htmlFor="purpose1" fontSize={'xs'} color="gray.700">
+                この本から学びたいこと
+              </FormLabel>
+              <CircularProgress value={(learnPoint * 100) / 3} color="green.400">
+                <CircularProgressLabel>{`${learnPoint}/3`}</CircularProgressLabel>
+              </CircularProgress>
+            </Flex>
             <Input
-              id="learned1"
+              id="purpose1"
               variant="filled"
               placeholder="目的その1"
-              {...register('learned1', {
+              {...register('purpose1', {
                 required: '学びたいことは3つ記載してください',
               })}
             />
-            <FormErrorMessage>{errors.learned1 && errors.learned1.message}</FormErrorMessage>
+            <FormErrorMessage>{errors.purpose1 && errors.purpose1.message}</FormErrorMessage>
           </FormControl>
-          <FormControl isInvalid={errors.learned2}>
+          <FormControl isInvalid={errors.purpose2}>
             <Input
-              id="learned2"
+              id="purpose2"
               variant="filled"
               placeholder="目的その2"
-              {...register('learned2', {
+              {...register('purpose2', {
                 required: '学びたいことは3つ記載してください',
               })}
             />
-            <FormErrorMessage>{errors.learned2 && errors.learned2.message}</FormErrorMessage>
+            <FormErrorMessage>{errors.purpose2 && errors.purpose2.message}</FormErrorMessage>
           </FormControl>
-          <FormControl isInvalid={errors.learned3}>
+          <FormControl isInvalid={errors.purpose3}>
             <Input
-              id="learned3"
+              id="purpose3"
               variant="filled"
               placeholder="目的その3"
-              {...register('learned3', {
+              {...register('purpose3', {
                 required: '学びたいことは3つ記載してください',
               })}
             />
-            <FormErrorMessage>{errors.learned3 && errors.learned3.message}</FormErrorMessage>
+            <FormErrorMessage>{errors.purpose3 && errors.purpose3.message}</FormErrorMessage>
           </FormControl>
 
           {fields.map((item, index) => (
