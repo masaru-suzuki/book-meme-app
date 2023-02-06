@@ -43,8 +43,7 @@ const FormAdd = () => {
       reason: values.reason,
       purpose: [values.purpose1, values.purpose2, values.purpose3, ...values.advancedPurpose],
     };
-    console.log(newBook);
-    // dispatch(add(newBook));
+    dispatch(add(newBook));
     reset();
     remove();
   }
