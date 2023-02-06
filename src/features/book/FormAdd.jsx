@@ -37,7 +37,6 @@ const FormAdd = () => {
 
   function onSubmit(values, e) {
     // TODO: 登録！みたいなFBあったらいいな。Chakra UIでできるかも
-    console.log(e.target.value);
     const newBook = {
       id: nanoid(),
       title: values.title,
@@ -52,17 +51,20 @@ const FormAdd = () => {
 
   // Formの動的処理
   const { fields, append, remove } = useFieldArray({ control, name: 'advancedPurpose' });
-
-  // 学びたいことを埋めた個数
-  const [purposeCount, setPurposeCount] = useState(0);
   const watchPurpose = watch(['purpose1', 'purpose2', 'purpose3']);
   const watchAdvancedPurpose = watch('advancedPurpose');
 
-  // 追加するボタンを押したら、監視するフィールドを1つ増やす
+  // 学びたいことを埋めた個数
+  const [purposeCount, setPurposeCount] = useState(0);
+  const [progressColor, setProgressColor] = useState('red.400');
+  const [trackColor, setTrackColor] = useState('red.100');
+
+  // 追加するボタン
   const addField = () => {
     append(['']);
   };
 
+  // プログレスリングのロジック
   useEffect(() => {
     if (!watchAdvancedPurpose) return;
     const purposeCount = watchPurpose.filter((val) => val !== '').length;
@@ -70,6 +72,28 @@ const FormAdd = () => {
     const filledField = purposeCount + advancedPurposeCount;
     setPurposeCount(filledField);
   }, [watchPurpose, watchAdvancedPurpose]);
+
+  // プログレスバーの色
+  useEffect(() => {
+    switch (purposeCount) {
+      case 0:
+        setProgressColor('red.400');
+        setTrackColor('red.400');
+        break;
+      case 1:
+        setProgressColor('red.400');
+        setTrackColor('red.100');
+        break;
+      case 2:
+        setProgressColor('orange.400');
+        setTrackColor('orange.100');
+        break;
+      default:
+        setProgressColor('green.400');
+        setTrackColor('green.100');
+        break;
+    }
+  }, [watchPurpose]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -111,7 +135,13 @@ const FormAdd = () => {
               <FormLabel htmlFor="purpose1" fontSize={'xs'} color="gray.700">
                 この本から学びたいこと
               </FormLabel>
-              <CircularProgress value={(purposeCount * 100) / 3} color="green.400">
+              <CircularProgress
+                value={(purposeCount * 100) / 3}
+                color={progressColor}
+                trackColor={trackColor}
+                thickness="10px"
+                size="32px"
+              >
                 <CircularProgressLabel>{`${purposeCount}/3`}</CircularProgressLabel>
               </CircularProgress>
             </Flex>
