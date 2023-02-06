@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { useForm, Controller, useFieldArray } from 'react-hook-form';
+import { useForm, Controller, useFieldArray, useWatch } from 'react-hook-form';
 import { add } from './store/modules/register';
 import { nanoid } from 'nanoid';
 import {
@@ -54,13 +54,22 @@ const FormAdd = () => {
   const { fields, append, remove } = useFieldArray({ control, name: 'advancedPurpose' });
 
   // 学びたいことを埋めた個数
-  const [learnPoint, setLearnPoint] = useState(0);
-  const watchAllFields = watch(['purpose1', 'purpose2', 'purpose3']);
+  const [purposeCount, setPurposeCount] = useState(0);
+  const watchPurpose = watch(['purpose1', 'purpose2', 'purpose3']);
+  const watchAdvancedPurpose = watch('advancedPurpose');
+
+  // 追加するボタンを押したら、監視するフィールドを1つ増やす
+  const addField = () => {
+    append(['']);
+  };
 
   useEffect(() => {
-    const learnPoint = watchAllFields.filter((val) => val !== '').length;
-    setLearnPoint(learnPoint);
-  }, [watchAllFields]);
+    if (!watchAdvancedPurpose) return;
+    const purposeCount = watchPurpose.filter((val) => val !== '').length;
+    const advancedPurposeCount = watchAdvancedPurpose.filter((val) => val !== '').length;
+    const filledField = purposeCount + advancedPurposeCount;
+    setPurposeCount(filledField);
+  }, [watchPurpose, watchAdvancedPurpose]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -102,14 +111,14 @@ const FormAdd = () => {
               <FormLabel htmlFor="purpose1" fontSize={'xs'} color="gray.700">
                 この本から学びたいこと
               </FormLabel>
-              <CircularProgress value={(learnPoint * 100) / 3} color="green.400">
-                <CircularProgressLabel>{`${learnPoint}/3`}</CircularProgressLabel>
+              <CircularProgress value={(purposeCount * 100) / 3} color="green.400">
+                <CircularProgressLabel>{`${purposeCount}/3`}</CircularProgressLabel>
               </CircularProgress>
             </Flex>
             <Input
               id="purpose1"
               variant="filled"
-              placeholder="目的その1"
+              placeholder="学びたいことその1"
               {...register('purpose1', {
                 required: '学びたいことは3つ記載してください',
               })}
@@ -120,7 +129,7 @@ const FormAdd = () => {
             <Input
               id="purpose2"
               variant="filled"
-              placeholder="目的その2"
+              placeholder="学びたいことその2"
               {...register('purpose2', {
                 required: '学びたいことは3つ記載してください',
               })}
@@ -131,7 +140,7 @@ const FormAdd = () => {
             <Input
               id="purpose3"
               variant="filled"
-              placeholder="目的その3"
+              placeholder="学びたいことその3"
               {...register('purpose3', {
                 required: '学びたいことは3つ記載してください',
               })}
@@ -142,7 +151,14 @@ const FormAdd = () => {
           {fields.map((item, index) => (
             <Flex key={item.id}>
               <Controller
-                render={({ field }) => <Input variant="filled" placeholder={`目的その${index + 4}`} {...field} />}
+                render={({ field }) => (
+                  <Input
+                    id={`advancedPurpose${index}`}
+                    variant="filled"
+                    placeholder={`学びたいことその${index + 4}`}
+                    {...field}
+                  />
+                )}
                 name={`advancedPurpose.${index}`}
                 control={control}
               />
@@ -154,7 +170,14 @@ const FormAdd = () => {
               />
             </Flex>
           ))}
-          <Button type="button" colorScheme="gray" onClick={() => append([''])} size="sm" placeSelf={'center'}>
+          <Button
+            type="button"
+            colorScheme="gray"
+            onClick={addField}
+            size="sm"
+            placeSelf={'center'}
+            isDisabled={purposeCount < 3}
+          >
             追加する
           </Button>
         </Grid>
