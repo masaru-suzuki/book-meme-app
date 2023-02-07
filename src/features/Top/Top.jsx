@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { initState } from '../book/store/modules/register';
+import { fetchBookList } from '../../api/bookList';
 import BookRoot from '../book/Top';
 import MemoRoot from '../memo/Top';
-import Register from '../book/Register';
 import RandomRoot from '../Random/Top';
 import ReviewRoot from '../Review/Top';
 import { Grid, Stack, Button, IconButton, Icon } from '@chakra-ui/react';
@@ -12,8 +14,20 @@ const CustomListIcon = () => <Icon as={BiListPlus} width="24px" height="24px" op
 const CustomBookIcon = () => <Icon as={HiOutlineBookOpen} width="24px" height="24px" opacity="0.8" />;
 
 const Top = () => {
+  const dispatch = useDispatch();
   const [rootFlag, setRootFlag] = useState('');
+  const { bookList } = useSelector((state) => state.register);
   const backToTop = () => setRootFlag('');
+
+  // 非同期で書籍情報を取得（それまではlocalStorageのデータを表示)
+  useEffect(() => {
+    const init = async () => {
+      const dbBooks = await fetchBookList();
+      dispatch(initState(dbBooks));
+    };
+
+    init();
+  }, []);
 
   return (
     <>
@@ -49,8 +63,8 @@ const Top = () => {
       )}
       {rootFlag === 'review' && <ReviewRoot backToTop={backToTop} />}
       {rootFlag === 'random' && <RandomRoot backToTop={backToTop} />}
-      {rootFlag === 'add' && <MemoRoot backToTop={backToTop} />}
-      {rootFlag === 'edit' && <BookRoot backToTop={backToTop} />}
+      {rootFlag === 'add' && <MemoRoot backToTop={backToTop} bookList={bookList} />}
+      {rootFlag === 'edit' && <BookRoot backToTop={backToTop} bookList={bookList} />}
     </>
   );
 };

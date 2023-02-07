@@ -16,7 +16,6 @@ import {
   CircularProgressLabel,
   Grid,
   Flex,
-  Box,
 } from '@chakra-ui/react';
 import { HiOutlineTrash } from 'react-icons/hi';
 import { useEffect, useState } from 'react';

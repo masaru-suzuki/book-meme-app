@@ -1,29 +1,13 @@
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { initState } from './store/modules/register';
-import { fetchBookList } from '../../api/bookList';
+import { useState } from 'react';
 import { ButtonBack } from '../../components/ButtonBack';
 import { VStack, Flex, Heading, IconButton, StackDivider, Button } from '@chakra-ui/react';
 import { EditIcon } from '@chakra-ui/icons';
-import BookEdit from './BookEdit';
 import FormEdit from './FormEdit';
 import FormAdd from './FormAdd';
 
-const BookRoot = ({ backToTop }) => {
-  const dispatch = useDispatch();
-  const { bookList } = useSelector((state) => state.register);
+const BookRoot = ({ bookList, backToTop }) => {
   const [bookRootFlag, setBookRootFlag] = useState(''); // "" || "add" || "edit"
   const [editingBook, setEditingBook] = useState();
-
-  useEffect(() => {
-    const init = async () => {
-      const dbBooks = await fetchBookList();
-      dispatch(initState(dbBooks));
-    };
-
-    init();
-  }, []);
 
   const handleEdit = (book) => {
     setBookRootFlag('edit');
