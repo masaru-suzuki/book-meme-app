@@ -37,8 +37,8 @@ const FormEdit = ({ book, backToBookRoot }) => {
     formState: { errors, isSubmitting },
   } = useForm();
 
+  // 本の更新
   function onSubmit(values, e) {
-    console.log(values);
     // TODO: 登録！みたいなFBあったらいいな。Chakra UIでできるかも
     // 空の場合は登録されないようにする
     const newPurpose = purpose?.map((_, index) => values[`purpose${index}`]).filter((val) => val !== '') || [];
@@ -56,6 +56,12 @@ const FormEdit = ({ book, backToBookRoot }) => {
     dispatch(update(newBook));
   }
 
+  // 本の削除
+  const removeBook = () => {
+    dispatch(bookRemove(book));
+    backToBookRoot();
+  };
+
   // Formの動的処理
   const { fields, append, remove } = useFieldArray({ control, name: 'advancedPurpose' });
   const watchPurposeArr = purpose?.map((_, index) => `purpose${index}`) || [];
@@ -67,16 +73,9 @@ const FormEdit = ({ book, backToBookRoot }) => {
   const [progressColor, setProgressColor] = useState('red.400');
   const [trackColor, setTrackColor] = useState('red.100');
 
-  // 追加するボタン
+  // 学びたいことを追加するボタン
   const addField = () => {
     append(['']);
-  };
-
-  // 本を削除する
-  const removeBook = () => {
-    console.log(book);
-    dispatch(bookRemove(book));
-    backToBookRoot();
   };
 
   // プログレスリングのロジック
