@@ -24,17 +24,15 @@ import { useEffect, useState } from 'react';
 const CustomListIcon = () => <Icon as={HiOutlineTrash} width="5" height="5" opacity="0.8" />;
 
 const FormEdit = ({ book, backToBookRoot }) => {
+  const dispatch = useDispatch();
   const { id, title, reason, purpose } = book;
-  console.log(purpose);
 
   // fallback
   // TODO: 書き方スマートになる？
   const purpose1 = purpose === undefined || purpose[0] === undefined ? '' : purpose[0];
   const purpose2 = purpose === undefined || purpose[1] === undefined ? '' : purpose[1];
   const purpose3 = purpose === undefined || purpose[2] === undefined ? '' : purpose[2];
-  const advancedPurpose = purpose === undefined || purpose.slice(3) === undefined ? [] : purpose.slice(3);
-
-  const dispatch = useDispatch();
+  const advancedPurposeStatic = purpose === undefined || purpose.slice(3) === undefined ? [] : purpose.slice(3);
 
   const {
     handleSubmit,
@@ -45,12 +43,19 @@ const FormEdit = ({ book, backToBookRoot }) => {
   } = useForm();
 
   function onSubmit(values, e) {
+    console.log(values);
     // TODO: 登録！みたいなFBあったらいいな。Chakra UIでできるかも
+    // 空の場合は登録されないようにする
+    const advancedStaticList = advancedPurposeStatic
+      .map((val, index) => values[`advancedPurposeStatic${index}`])
+      .filter((val) => val !== '');
+    const advancedList = values.advancedPurpose.filter((val) => val !== '');
+
     const newBook = {
       id: id,
       title: values.title,
       reason: values.reason,
-      purpose: [values.purpose1, values.purpose2, values.purpose3, ...values.advancedPurpose],
+      purpose: [values.purpose1, values.purpose2, values.purpose3, ...advancedStaticList, ...advancedList],
     };
     console.log(newBook);
 
@@ -62,6 +67,8 @@ const FormEdit = ({ book, backToBookRoot }) => {
   // Formの動的処理
   const { fields, append, remove } = useFieldArray({ control, name: 'advancedPurpose' });
   const watchPurpose = watch(['purpose1', 'purpose2', 'purpose3']);
+  const watchAdvancedPurposeStaticArr = advancedPurposeStatic.map((_, i) => `advancedPurposeStatic${i}`);
+  const watchAdvancedPurposeStatic = watch(watchAdvancedPurposeStaticArr);
   const watchAdvancedPurpose = watch('advancedPurpose');
 
   // 学びたいことを埋めた個数
@@ -78,8 +85,9 @@ const FormEdit = ({ book, backToBookRoot }) => {
   useEffect(() => {
     if (!watchAdvancedPurpose) return;
     const purposeCount = watchPurpose.filter((val) => val !== '').length;
+    const advancedPurposeStaticCount = watchAdvancedPurposeStatic.filter((val) => val !== '').length;
     const advancedPurposeCount = watchAdvancedPurpose.filter((val) => val !== '').length;
-    const filledField = purposeCount + advancedPurposeCount;
+    const filledField = purposeCount + advancedPurposeStaticCount + advancedPurposeCount;
     setPurposeCount(filledField);
   }, [watchPurpose, watchAdvancedPurpose]);
 
@@ -193,6 +201,25 @@ const FormEdit = ({ book, backToBookRoot }) => {
             <FormErrorMessage>{errors.purpose3 && errors.purpose3.message}</FormErrorMessage>
           </FormControl>
 
+          {advancedPurposeStatic.map((item, index) => (
+            <FormControl key={item + index}>
+              <Flex>
+                <Input
+                  id={`advancedPurposeStatic${index}`}
+                  variant="filled"
+                  placeholder={`学びたいことその${index + 4}`}
+                  defaultValue={item}
+                  {...register(`advancedPurposeStatic${index}`)}
+                />
+                <IconButton
+                  variant={'ghost'}
+                  colorScheme={'gray'}
+                  icon={<CustomListIcon />}
+                  onClick={() => remove(index)}
+                />
+              </Flex>
+            </FormControl>
+          ))}
           {fields.map((item, index) => (
             <Flex key={item.id}>
               <Controller
@@ -200,7 +227,7 @@ const FormEdit = ({ book, backToBookRoot }) => {
                   <Input
                     id={`advancedPurpose${index}`}
                     variant="filled"
-                    placeholder={`学びたいことその${index + 4}`}
+                    placeholder={`学びたいことその${purposeCount + 1}`}
                     {...field}
                   />
                 )}
