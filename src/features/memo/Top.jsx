@@ -1,13 +1,12 @@
 import { ButtonBack } from '../../components/ButtonBack';
-import FormAdd from './FormAdd';
 
-const BookAdd = ({ backToTop }) => {
+const Top = ({ backToTop }) => {
   return (
     <>
       <ButtonBack label="TOP" cb={backToTop} />
-      <FormAdd />
+      <h1>memo add</h1>
     </>
   );
 };
 
-export default BookAdd;
+export default Top;

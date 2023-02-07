@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import BookRoot from '../book/Top';
-import BookAdd from '../book/BookAdd';
+import MemoRoot from '../memo/Top';
 import Register from '../book/Register';
 import RandomRoot from '../Random/Top';
 import ReviewRoot from '../Review/Top';
@@ -8,13 +8,12 @@ import { Grid, Stack, Button, IconButton, Icon } from '@chakra-ui/react';
 import { HiOutlineBookOpen } from 'react-icons/hi';
 import { BiListPlus } from 'react-icons/bi';
 
-const CustomListIcon = ()=><Icon as={BiListPlus} width="24px" height="24px" opacity="0.8"/>
-const CustomBookIcon = ()=><Icon as={HiOutlineBookOpen} width="24px" height="24px" opacity="0.8"/>
+const CustomListIcon = () => <Icon as={BiListPlus} width="24px" height="24px" opacity="0.8" />;
+const CustomBookIcon = () => <Icon as={HiOutlineBookOpen} width="24px" height="24px" opacity="0.8" />;
 
 const Top = () => {
   const [rootFlag, setRootFlag] = useState('');
   const backToTop = () => setRootFlag('');
-
 
   return (
     <>
@@ -34,7 +33,7 @@ const Top = () => {
               aria-label="Search database"
               colorScheme={'gray'}
               icon={<CustomListIcon />}
-              onClick={() => setRootFlag('edit')}
+              onClick={() => setRootFlag('add')}
             />
             <IconButton
               borderRadius="100%"
@@ -43,15 +42,15 @@ const Top = () => {
               aria-label="Search database"
               colorScheme={'gray'}
               icon={<CustomBookIcon />}
-              onClick={() => setRootFlag('add')}
+              onClick={() => setRootFlag('edit')}
             />
           </Stack>
         </Grid>
       )}
       {rootFlag === 'review' && <ReviewRoot backToTop={backToTop} />}
       {rootFlag === 'random' && <RandomRoot backToTop={backToTop} />}
+      {rootFlag === 'add' && <MemoRoot backToTop={backToTop} />}
       {rootFlag === 'edit' && <BookRoot backToTop={backToTop} />}
-      {rootFlag === 'add' && <BookAdd backToTop={backToTop} />}
     </>
   );
 };
