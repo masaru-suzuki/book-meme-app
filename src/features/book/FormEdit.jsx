@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { useForm, Controller, useFieldArray, useWatch } from 'react-hook-form';
-import { update } from './store/modules/register';
+import { update, remove as bookRemove } from './store/modules/register';
 import { nanoid } from 'nanoid';
 import {
   FormControl,
@@ -16,7 +16,6 @@ import {
   CircularProgressLabel,
   Grid,
   Flex,
-  Box,
 } from '@chakra-ui/react';
 import { HiOutlineTrash } from 'react-icons/hi';
 import { useEffect, useState } from 'react';
@@ -30,7 +29,6 @@ const FormEdit = ({ book, backToBookRoot }) => {
   // fallback
   // TODO: 書き方スマートになる？
   const advancedPurposeStatic = purpose === undefined || purpose.slice(3) === undefined ? [] : purpose.slice(3);
-  console.log({ purpose });
   const {
     handleSubmit,
     register,
@@ -43,17 +41,15 @@ const FormEdit = ({ book, backToBookRoot }) => {
     console.log(values);
     // TODO: 登録！みたいなFBあったらいいな。Chakra UIでできるかも
     // 空の場合は登録されないようにする
-    const newPurpose = purpose.map((_, index) => values[`purpose${index}`]).filter((val) => val !== '');
+    const newPurpose = purpose?.map((_, index) => values[`purpose${index}`]).filter((val) => val !== '') || [];
     const advancedList = values.advancedPurpose.filter((val) => val !== '');
 
-    console.log(newPurpose);
     const newBook = {
       id: id,
       title: values.title,
       reason: values.reason,
       purpose: [...newPurpose, ...advancedList],
     };
-    console.log(newBook);
 
     // ロジック
     backToBookRoot();
@@ -62,7 +58,7 @@ const FormEdit = ({ book, backToBookRoot }) => {
 
   // Formの動的処理
   const { fields, append, remove } = useFieldArray({ control, name: 'advancedPurpose' });
-  const watchPurposeArr = purpose.map((_, index) => `purpose${index}`);
+  const watchPurposeArr = purpose?.map((_, index) => `purpose${index}`) || [];
   const watchPurpose = watch(watchPurposeArr);
   const watchAdvancedPurpose = watch('advancedPurpose');
 
@@ -76,10 +72,17 @@ const FormEdit = ({ book, backToBookRoot }) => {
     append(['']);
   };
 
+  // 本を削除する
+  const removeBook = () => {
+    console.log(book);
+    dispatch(bookRemove(book));
+    backToBookRoot();
+  };
+
   // プログレスリングのロジック
   useEffect(() => {
     if (!watchAdvancedPurpose) return;
-    const purposeCount = watchPurpose.filter((val) => val !== '').length;
+    const purposeCount = watchPurpose.filter((val) => val !== '').length || 0;
     const advancedPurposeCount = watchAdvancedPurpose.filter((val) => val !== '').length;
     const filledField = purposeCount + advancedPurposeCount;
     setPurposeCount(filledField);
@@ -158,8 +161,7 @@ const FormEdit = ({ book, backToBookRoot }) => {
               <CircularProgressLabel>{`${purposeCount}/3`}</CircularProgressLabel>
             </CircularProgress>
           </Flex>
-          {purpose.map((item, index) => {
-            console.log(item);
+          {purpose?.map((item, index) => {
             return (
               <FormControl key={item + index}>
                 <Input
@@ -194,21 +196,18 @@ const FormEdit = ({ book, backToBookRoot }) => {
               />
             </Flex>
           ))}
-          <Button
-            type="button"
-            colorScheme="gray"
-            onClick={addField}
-            size="sm"
-            placeSelf={'center'}
-            isDisabled={purposeCount < 3}
-          >
+          <Button type="button" colorScheme="gray" onClick={addField} size="sm" placeSelf={'center'}>
             追加する
           </Button>
         </Grid>
-
-        <Button mt={4} colorScheme="linkedin" isLoading={isSubmitting} isDisabled={purposeCount < 3} type="submit">
-          登録する
-        </Button>
+        <Grid>
+          <Button mt={4} colorScheme="linkedin" isLoading={isSubmitting} isDisabled={purposeCount < 3} type="submit">
+            登録する
+          </Button>
+          <Button mt={4} colorScheme="red" type="button" isLoading={isSubmitting} onClick={removeBook}>
+            削除する
+          </Button>
+        </Grid>
       </VStack>
     </form>
   );
