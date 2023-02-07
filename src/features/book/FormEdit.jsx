@@ -109,6 +109,7 @@ const FormEdit = ({ book, backToBookRoot }) => {
     }
   }, [watchPurpose]);
 
+  // FIXME: 追加フォームとまとめることができる？
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <VStack divider={<StackDivider borderColor="gray.100" />} spacing={5} align="stretch">

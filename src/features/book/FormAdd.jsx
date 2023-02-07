@@ -49,6 +49,7 @@ const FormAdd = () => {
   }
 
   // Formの動的処理
+  // FIXME: スマートに書くことはできないか？
   const { fields, append, remove } = useFieldArray({ control, name: 'advancedPurpose' });
   const watchPurpose = watch(['purpose1', 'purpose2', 'purpose3']);
   const watchAdvancedPurpose = watch('advancedPurpose');
