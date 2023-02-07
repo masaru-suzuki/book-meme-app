@@ -29,11 +29,8 @@ const FormEdit = ({ book, backToBookRoot }) => {
 
   // fallback
   // TODO: 書き方スマートになる？
-  const purpose1 = purpose === undefined || purpose[0] === undefined ? '' : purpose[0];
-  const purpose2 = purpose === undefined || purpose[1] === undefined ? '' : purpose[1];
-  const purpose3 = purpose === undefined || purpose[2] === undefined ? '' : purpose[2];
   const advancedPurposeStatic = purpose === undefined || purpose.slice(3) === undefined ? [] : purpose.slice(3);
-
+  console.log({ purpose });
   const {
     handleSubmit,
     register,
@@ -46,16 +43,15 @@ const FormEdit = ({ book, backToBookRoot }) => {
     console.log(values);
     // TODO: 登録！みたいなFBあったらいいな。Chakra UIでできるかも
     // 空の場合は登録されないようにする
-    const advancedStaticList = advancedPurposeStatic
-      .map((val, index) => values[`advancedPurposeStatic${index}`])
-      .filter((val) => val !== '');
+    const newPurpose = purpose.map((_, index) => values[`purpose${index}`]).filter((val) => val !== '');
     const advancedList = values.advancedPurpose.filter((val) => val !== '');
 
+    console.log(newPurpose);
     const newBook = {
       id: id,
       title: values.title,
       reason: values.reason,
-      purpose: [values.purpose1, values.purpose2, values.purpose3, ...advancedStaticList, ...advancedList],
+      purpose: [...newPurpose, ...advancedList],
     };
     console.log(newBook);
 
@@ -66,9 +62,8 @@ const FormEdit = ({ book, backToBookRoot }) => {
 
   // Formの動的処理
   const { fields, append, remove } = useFieldArray({ control, name: 'advancedPurpose' });
-  const watchPurpose = watch(['purpose1', 'purpose2', 'purpose3']);
-  const watchAdvancedPurposeStaticArr = advancedPurposeStatic.map((_, i) => `advancedPurposeStatic${i}`);
-  const watchAdvancedPurposeStatic = watch(watchAdvancedPurposeStaticArr);
+  const watchPurposeArr = purpose.map((_, index) => `purpose${index}`);
+  const watchPurpose = watch(watchPurposeArr);
   const watchAdvancedPurpose = watch('advancedPurpose');
 
   // 学びたいことを埋めた個数
@@ -85,9 +80,8 @@ const FormEdit = ({ book, backToBookRoot }) => {
   useEffect(() => {
     if (!watchAdvancedPurpose) return;
     const purposeCount = watchPurpose.filter((val) => val !== '').length;
-    const advancedPurposeStaticCount = watchAdvancedPurposeStatic.filter((val) => val !== '').length;
     const advancedPurposeCount = watchAdvancedPurpose.filter((val) => val !== '').length;
-    const filledField = purposeCount + advancedPurposeStaticCount + advancedPurposeCount;
+    const filledField = purposeCount + advancedPurposeCount;
     setPurposeCount(filledField);
   }, [watchPurpose, watchAdvancedPurpose]);
 
@@ -150,76 +144,34 @@ const FormEdit = ({ book, backToBookRoot }) => {
           <FormErrorMessage>{errors.reason && errors.reason.message}</FormErrorMessage>
         </FormControl>
         <Grid gap="3">
-          <FormControl isInvalid={errors.purpose1}>
-            <Flex justifyContent={'space-between'} alignItems="center" mb={'4'}>
-              <FormLabel htmlFor="purpose1" fontSize={'xs'} color="gray.700">
-                この本から学びたいこと
-              </FormLabel>
-              <CircularProgress
-                value={(purposeCount * 100) / 3}
-                color={progressColor}
-                trackColor={trackColor}
-                thickness="10px"
-                size="32px"
-              >
-                <CircularProgressLabel>{`${purposeCount}/3`}</CircularProgressLabel>
-              </CircularProgress>
-            </Flex>
-            <Input
-              id="purpose1"
-              variant="filled"
-              placeholder="学びたいことその1"
-              defaultValue={purpose1}
-              {...register('purpose1', {
-                required: '学びたいことは3つ記載してください',
-              })}
-            />
-            <FormErrorMessage>{errors.purpose1 && errors.purpose1.message}</FormErrorMessage>
-          </FormControl>
-          <FormControl isInvalid={errors.purpose2}>
-            <Input
-              id="purpose2"
-              variant="filled"
-              placeholder="学びたいことその2"
-              defaultValue={purpose2}
-              {...register('purpose2', {
-                required: '学びたいことは3つ記載してください',
-              })}
-            />
-            <FormErrorMessage>{errors.purpose2 && errors.purpose2.message}</FormErrorMessage>
-          </FormControl>
-          <FormControl isInvalid={errors.purpose3}>
-            <Input
-              id="purpose3"
-              variant="filled"
-              placeholder="学びたいことその3"
-              defaultValue={purpose3}
-              {...register('purpose3', {
-                required: '学びたいことは3つ記載してください',
-              })}
-            />
-            <FormErrorMessage>{errors.purpose3 && errors.purpose3.message}</FormErrorMessage>
-          </FormControl>
-
-          {advancedPurposeStatic.map((item, index) => (
-            <FormControl key={item + index}>
-              <Flex>
+          <Flex justifyContent={'space-between'} alignItems="center" mb={'4'}>
+            <FormLabel htmlFor="purpose1" fontSize={'xs'} color="gray.700">
+              この本から学びたいこと
+            </FormLabel>
+            <CircularProgress
+              value={(purposeCount * 100) / 3}
+              color={progressColor}
+              trackColor={trackColor}
+              thickness="10px"
+              size="32px"
+            >
+              <CircularProgressLabel>{`${purposeCount}/3`}</CircularProgressLabel>
+            </CircularProgress>
+          </Flex>
+          {purpose.map((item, index) => {
+            console.log(item);
+            return (
+              <FormControl key={item + index}>
                 <Input
-                  id={`advancedPurposeStatic${index}`}
+                  id={`purpose${index}`}
                   variant="filled"
-                  placeholder={`学びたいことその${index + 4}`}
+                  placeholder={`学びたいことその${index + 1}`}
                   defaultValue={item}
-                  {...register(`advancedPurposeStatic${index}`)}
+                  {...register(`purpose${index}`)}
                 />
-                <IconButton
-                  variant={'ghost'}
-                  colorScheme={'gray'}
-                  icon={<CustomListIcon />}
-                  onClick={() => remove(index)}
-                />
-              </Flex>
-            </FormControl>
-          ))}
+              </FormControl>
+            );
+          })}
           {fields.map((item, index) => (
             <Flex key={item.id}>
               <Controller
@@ -227,7 +179,7 @@ const FormEdit = ({ book, backToBookRoot }) => {
                   <Input
                     id={`advancedPurpose${index}`}
                     variant="filled"
-                    placeholder={`学びたいことその${purposeCount + 1}`}
+                    placeholder={`学びたいことその${index + advancedPurposeStatic.length + 4}`}
                     {...field}
                   />
                 )}
@@ -254,7 +206,7 @@ const FormEdit = ({ book, backToBookRoot }) => {
           </Button>
         </Grid>
 
-        <Button mt={4} colorScheme="linkedin" isLoading={isSubmitting} type="submit">
+        <Button mt={4} colorScheme="linkedin" isLoading={isSubmitting} isDisabled={purposeCount < 3} type="submit">
           登録する
         </Button>
       </VStack>
