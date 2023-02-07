@@ -1,11 +1,46 @@
 import { ButtonBack } from '../../components/ButtonBack';
+import MemeList from './MemeList.jsx';
+import { Grid, Stack, Button, IconButton, Icon, Heading, Divider } from '@chakra-ui/react';
+import { HiPlus } from 'react-icons/hi';
+import { useState } from 'react';
+
+const CustomListIcon = () => <Icon as={HiPlus} width="24px" height="24px" opacity="0.8" />;
 
 const MemoEdit = ({ book, backToMemoRoot }) => {
+  const [bookMemoFlag, setBookMemoFlag] = useState('');
+
   return (
     <>
       <ButtonBack label="BACK" cb={backToMemoRoot} />
-      <h2>memo edit</h2>
-      <p>{book.title}</p>
+      <Heading mt={'5'} pb={'2'}>
+        {book.title}
+      </Heading>
+      <Divider />
+      {bookMemoFlag === '' && (
+        <>
+          <MemeList memoList={book.memoList} />
+          <IconButton
+            borderRadius="100%"
+            position="fixed"
+            bottom="5"
+            right="5"
+            w={14}
+            h={14}
+            aria-label="Search database"
+            colorScheme={'gray'}
+            icon={<CustomListIcon />}
+            onClick={() => setBookMemoFlag('add')}
+          />
+        </>
+      )}
+      {bookMemoFlag === 'add' && (
+        <>
+          <p>add</p>
+          <Button mt={'4'} colorScheme="linkedin" onClick={() => setBookMemoFlag('')}>
+            メモを追加する
+          </Button>
+        </>
+      )}
     </>
   );
 };
