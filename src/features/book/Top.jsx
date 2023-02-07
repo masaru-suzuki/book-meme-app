@@ -4,9 +4,11 @@ import { useDispatch } from 'react-redux';
 import { initState } from './store/modules/register';
 import { fetchBookList } from '../../api/bookList';
 import { ButtonBack } from '../../components/ButtonBack';
-import { VStack, Flex, Heading, IconButton, StackDivider } from '@chakra-ui/react';
+import { VStack, Flex, Heading, IconButton, StackDivider, Button } from '@chakra-ui/react';
 import { EditIcon } from '@chakra-ui/icons';
 import BookEdit from './BookEdit';
+import FormEdit from './FormEdit';
+import FormAdd from './FormAdd';
 
 const BookRoot = ({ backToTop }) => {
   const dispatch = useDispatch();
@@ -24,7 +26,6 @@ const BookRoot = ({ backToTop }) => {
   }, []);
 
   const handleEdit = (book) => {
-    console.log(book);
     setBookRootFlag('edit');
     setEditingBook(book);
   };
@@ -59,15 +60,22 @@ const BookRoot = ({ backToTop }) => {
                 </Flex>
               );
             })}
-            <StackDivider borderColor="gray.200" />
+            <Button mt={'4'} colorScheme="linkedin" onClick={() => setBookRootFlag('add')}>
+              本を追加する
+            </Button>
           </VStack>
         </>
       )}
-      {bookRootFlag === 'add' && <>add</>}
+      {bookRootFlag === 'add' && (
+        <>
+          <ButtonBack label="BACK" cb={backToBookRoot} />
+          <FormAdd />
+        </>
+      )}
       {bookRootFlag === 'edit' && (
         <>
           <ButtonBack label="BACK" cb={backToBookRoot} />
-          <BookEdit book={editingBook} />
+          <FormEdit book={editingBook} backToBookRoot={backToBookRoot} />
         </>
       )}
     </>

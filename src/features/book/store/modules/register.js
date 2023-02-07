@@ -27,21 +27,15 @@ const register = createSlice({
 
       // localStorage
       localStorage.setItem('bookList', JSON.stringify(newBookList));
-      return { bookList: newBookList };
+
+      // state
+      state.bookList = newBookList;
     },
     update(state, { payload }) {
       // TODO: payloadで渡ってくるオブジェクトはfirebaseのオブジェクト型と揃える
       // 管理できないか？
       const bookList = [...state.bookList];
-
-      // FIXME: 更新のロジックスマートにかけないか？
-      const newBookList = bookList.map((book) => {
-        if (book.id === payload.id) {
-          // TODO: タイトル以外にもそのほかの要素を更新するときはどうする？
-          book.title = payload.title;
-        }
-        return book;
-      });
+      const newBookList = bookList.map((book) => (book.id === payload.id ? payload : book));
 
       // firebase
       const bookRef = doc(db, 'books', payload.id);
@@ -51,6 +45,7 @@ const register = createSlice({
       // localStorage
       localStorage.setItem('bookList', JSON.stringify(newBookList));
 
+      // state
       state.bookList = newBookList;
     },
     remove(state, { payload }) {
@@ -64,6 +59,7 @@ const register = createSlice({
       // localStorage
       localStorage.setItem('bookList', JSON.stringify(newBookList));
 
+      // state
       state.bookList = newBookList;
     },
   },
