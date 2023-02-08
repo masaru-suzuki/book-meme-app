@@ -3,6 +3,7 @@ import MemeList from './MemeList.jsx';
 import { Grid, Stack, Button, IconButton, Icon, Heading, Divider } from '@chakra-ui/react';
 import { HiPlus } from 'react-icons/hi';
 import { useState } from 'react';
+import FormAdd from './FormAdd';
 
 const CustomListIcon = () => <Icon as={HiPlus} width="24px" height="24px" opacity="0.8" />;
 
@@ -33,14 +34,7 @@ const MemoEdit = ({ book, backToMemoRoot }) => {
           />
         </>
       )}
-      {bookMemoFlag === 'add' && (
-        <>
-          <p>add</p>
-          <Button mt={'4'} colorScheme="linkedin" onClick={() => setBookMemoFlag('')}>
-            メモを追加する
-          </Button>
-        </>
-      )}
+      {bookMemoFlag === 'add' && <FormAdd bookId={book.id} />}
     </>
   );
 };
