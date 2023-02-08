@@ -1,4 +1,4 @@
-import { Grid, Flex, Heading, IconButton, Box } from '@chakra-ui/react';
+import { Grid, VStack, StackDivider, Flex, Heading, IconButton, Box } from '@chakra-ui/react';
 import { EditIcon } from '@chakra-ui/icons';
 import { useSelector } from 'react-redux';
 
@@ -9,20 +9,28 @@ const MemeList = ({ bookId }) => {
   if (bookQuizList.length) {
     return (
       <>
-        {bookQuizList.map((quiz) => {
-          return (
-            <Flex
-              key={quiz.id}
-              alignItems="center"
-              gap="6"
-              justifyContent="space-between"
-              // onClick={() => handleEdit(quiz)}
-            >
-              <Heading size="sm">{quiz.quiz}</Heading>
-              <IconButton variant={'ghost'} size={'xs'} aria-label="Search database" icon={<EditIcon w={4} h={4} />} />
-            </Flex>
-          );
-        })}
+        <VStack divider={<StackDivider borderColor="gray.200" />} mt={4} spacing={4} align="stretch">
+          {bookQuizList.map((quiz) => {
+            return (
+              <Flex
+                key={quiz.id}
+                alignItems="center"
+                gap="6"
+                justifyContent="space-between"
+                // onClick={() => handleEdit(quiz)}
+              >
+                <Heading size="sm">{quiz.quiz}</Heading>
+                <IconButton
+                  variant={'ghost'}
+                  size={'xs'}
+                  aria-label="Search database"
+                  icon={<EditIcon w={4} h={4} />}
+                />
+              </Flex>
+            );
+          })}
+          <StackDivider borderColor="gray.200" />
+        </VStack>
       </>
     );
   } else {
