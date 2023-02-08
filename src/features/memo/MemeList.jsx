@@ -4,15 +4,12 @@ import { useSelector } from 'react-redux';
 
 const MemeList = ({ bookId }) => {
   const { quizList } = useSelector((state) => state.quizReducer);
-  // const editQuizList = quizList.filter((quiz) => (quiz.bookId = bookId));
+  const bookQuizList = quizList.filter((quiz) => quiz.bookId === bookId);
 
-  console.log(bookId);
-  console.log(quizList);
-
-  if (quizList) {
+  if (bookQuizList.length) {
     return (
       <>
-        {quizList.map((quiz) => {
+        {bookQuizList.map((quiz) => {
           return (
             <Flex
               key={quiz.id}
