@@ -11,13 +11,11 @@ const quizReducer = createSlice({
   initialState: localStorageBookList,
   reducers: {
     add(state, { payload }) {
-      console.log(state);
-      const newQuizList = [...state.quizList, payload.quizList];
+      const newQuizList = [...state.quizList, payload.newQuiz];
       addQuizDB(payload.id, payload.newQuiz);
-      console.log(newQuizList);
 
       // // localStorage
-      // localStorage.setItem('bookList', JSON.stringify(newBookList));
+      localStorage.setItem('bookList', JSON.stringify(newQuizList));
 
       // // state
       state.quizList = newQuizList;

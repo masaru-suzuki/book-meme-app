@@ -19,7 +19,7 @@ const MemoEdit = ({ book, backToMemoRoot }) => {
       <Divider />
       {bookMemoFlag === '' && (
         <>
-          <MemeList memoList={book.memoList} />
+          <MemeList bookId={book.id} />
           <IconButton
             borderRadius="100%"
             position="fixed"

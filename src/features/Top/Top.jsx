@@ -19,7 +19,6 @@ const Top = () => {
   const dispatch = useDispatch();
   const [rootFlag, setRootFlag] = useState('');
   const { bookList } = useSelector((state) => state.register);
-  const { quizList } = useSelector((state) => state.quizReducer);
   const backToTop = () => setRootFlag('');
 
   // 非同期で書籍情報を取得（それまではlocalStorageのデータを表示)
@@ -68,7 +67,7 @@ const Top = () => {
       )}
       {rootFlag === 'review' && <ReviewRoot backToTop={backToTop} />}
       {rootFlag === 'random' && <RandomRoot backToTop={backToTop} />}
-      {rootFlag === 'add' && <MemoRoot backToTop={backToTop} bookList={bookList} quizList={quizList} />}
+      {rootFlag === 'add' && <MemoRoot backToTop={backToTop} bookList={bookList} />}
       {rootFlag === 'edit' && <BookRoot backToTop={backToTop} bookList={bookList} />}
     </>
   );

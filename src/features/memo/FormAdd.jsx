@@ -26,6 +26,7 @@ const FormAdd = ({ bookId, bookTitle }) => {
   function onSubmit(values, e) {
     const id = nanoid();
     const newQuiz = {
+      id: id,
       bookId: bookId,
       bookTitle: bookTitle,
       quiz: values.quiz,
