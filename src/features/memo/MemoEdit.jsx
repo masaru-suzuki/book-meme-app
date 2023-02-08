@@ -10,9 +10,12 @@ const CustomListIcon = () => <Icon as={HiPlus} width="24px" height="24px" opacit
 const MemoEdit = ({ book, backToMemoRoot }) => {
   const [bookMemoFlag, setBookMemoFlag] = useState('');
 
+  // BACKボタンの戻り先を画面によって変えている
+  const toggleBackTo = () => (bookMemoFlag === '' ? backToMemoRoot() : setBookMemoFlag(''));
+
   return (
     <>
-      <ButtonBack label="BACK" cb={backToMemoRoot} />
+      <ButtonBack label="BACK" cb={toggleBackTo} />
       <Heading mt={'5'} pb={'2'}>
         {book.title}
       </Heading>
