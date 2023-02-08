@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { initState } from '../book/store/modules/register';
 import { fetchBookList } from '../../api/bookList';
+import { fetchQuizList } from '../../api/quizList';
 import BookRoot from '../book/Top';
 import MemoRoot from '../memo/Top';
 import RandomRoot from '../Random/Top';

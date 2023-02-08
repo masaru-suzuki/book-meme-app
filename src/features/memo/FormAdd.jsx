@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
-// import { add } from './store/modules/register';
+import { add } from '../book/store/modules/quizReducer.js';
 import { nanoid } from 'nanoid';
 import {
   FormControl,
@@ -13,9 +13,8 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 
-const FormAdd = ({ bookId }) => {
+const FormAdd = ({ bookId, bookTitle }) => {
   const dispatch = useDispatch();
-  console.log(bookId);
 
   const {
     handleSubmit,
@@ -25,15 +24,16 @@ const FormAdd = ({ bookId }) => {
   } = useForm();
 
   function onSubmit(values, e) {
+    const id = nanoid();
     const newQuiz = {
-      id: nanoid(),
+      bookId: bookId,
+      bookTitle: bookTitle,
       quiz: values.quiz,
       answer: values.answer,
       stage: 0,
     };
-    console.log(newQuiz);
     // TODO: 今日の復習するタイミングリストに登録する
-    // dispatch(add(newBook));
+    dispatch(add({ id, newQuiz }));
     reset();
   }
 

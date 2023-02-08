@@ -34,7 +34,7 @@ const MemoEdit = ({ book, backToMemoRoot }) => {
           />
         </>
       )}
-      {bookMemoFlag === 'add' && <FormAdd bookId={book.id} />}
+      {bookMemoFlag === 'add' && <FormAdd bookId={book.id} bookTitle={book.title} />}
     </>
   );
 };
