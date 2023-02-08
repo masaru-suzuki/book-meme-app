@@ -4,9 +4,10 @@ import { VStack, Flex, Heading, IconButton, StackDivider, Button } from '@chakra
 import { EditIcon } from '@chakra-ui/icons';
 import MemoEdit from './MemoEdit';
 
-const Top = ({ bookList, backToTop }) => {
+const Top = ({ bookList, quizList, backToTop }) => {
   const [memoRootFlag, setMemoRootFlag] = useState('');
   const [editingBook, setEditingBook] = useState();
+  console.log(quizList);
 
   const handleEdit = (book) => {
     setMemoRootFlag('edit');

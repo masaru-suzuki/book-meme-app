@@ -1,26 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { doc, setDoc, updateDoc, deleteDoc } from 'firebase/firestore';
-import db from '../../../../api/firebase.js';
 import { addQuizDB } from '../../../../api/quizList.js';
 
 const localStorageBookList = {
-  bookList: JSON.parse(localStorage.getItem('bookList')),
-  status: 'Loading...',
-};
-
-const mock = {
-  quizList: [
-    {
-      id: 'anietornsatirsent488888',
-      title: 'test',
-    },
-  ],
+  bookList: JSON.parse(localStorage.getItem('quizList')),
   status: 'Loading...',
 };
 
 const quizReducer = createSlice({
   name: 'quizReducer',
-  initialState: mock,
+  initialState: localStorageBookList,
   reducers: {
     add(state, { payload }) {
       console.log(state);
@@ -63,17 +51,17 @@ const quizReducer = createSlice({
   extraReducers: (builder) => {
     builder
       // TODO: initialStateのstatusが表示されており、pendingの方は表示されないのを確認
-      .addCase(initState.pending, (state) => {
+      .addCase(initMemoList.pending, (state) => {
         state.status = 'Loading(asyncThunk)';
       })
-      .addCase(initState.fulfilled, (state, { payload }) => {
+      .addCase(initMemoList.fulfilled, (state, { payload }) => {
         state.status = '取得済み';
-        state.bookList = payload;
+        state.quizList = payload;
 
         // localStorage
-        localStorage.setItem('bookList', JSON.stringify(payload));
+        localStorage.setItem('quizList', JSON.stringify(payload));
       })
-      .addCase(initState.rejected, (state) => {
+      .addCase(initMemoList.rejected, (state) => {
         state.status = 'データの取得に失敗しました。';
       });
   },
@@ -81,8 +69,8 @@ const quizReducer = createSlice({
 
 const { add, remove, update } = quizReducer.actions;
 
-const initState = createAsyncThunk('quizReducer/asyncInit', async (payload) => payload);
+const initMemoList = createAsyncThunk('quizReducer/asyncInit', async (payload) => payload);
 
-export { add, remove, update, initState };
+export { add, remove, update, initMemoList };
 
 export default quizReducer.reducer;
