@@ -33,7 +33,7 @@ const FormAdd = ({ bookId, bookTitle }) => {
       answer: values.answer,
       stage: 0,
     };
-    // TODO: 今日の復習するタイミングリストに登録する
+    // TODO: 今日の復習するタイミングリストに登録する=>復習のコレクション作成？データの管理に悩む
     dispatch(add({ id, newQuiz }));
     reset();
   }

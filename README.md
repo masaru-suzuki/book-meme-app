@@ -1,13 +1,18 @@
 # BOOK MEMO
 
-## FEATURE
+色々考え中です。
+まだ整理できていない状態です。
 
-- book collection in firebase
-- make quiz
+## できること
+
+-
+
+## やりたいこと
+
+- 忘却曲線に合わせて問題を出題できるようにする
 
 ## BD 構造
 
 - books
 - quizList
-
-処理が遅くなった時を試すので、あえて分けています。
+- schedule

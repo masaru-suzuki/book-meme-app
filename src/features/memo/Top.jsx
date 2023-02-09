@@ -23,7 +23,7 @@ const Top = ({ bookList, backToTop }) => {
           <VStack divider={<StackDivider borderColor="gray.200" />} spacing={4} align="stretch">
             <StackDivider borderColor="gray.200" />
 
-            {/* TODO: スライドで削除できるようにする */}
+            {/* TODO: タッチデバイス想定なのでスライドで削除できるようにする */}
             {bookList.map((book) => {
               return (
                 <Flex

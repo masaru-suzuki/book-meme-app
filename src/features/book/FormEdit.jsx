@@ -51,7 +51,6 @@ const FormEdit = ({ book, backToBookRoot }) => {
       purpose: [...newPurpose, ...advancedList],
     };
 
-    // ロジック
     backToBookRoot();
     dispatch(update(newBook));
   }
