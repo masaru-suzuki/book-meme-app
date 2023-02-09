@@ -17,3 +17,5 @@ export const fetchBookList = () => {
     resolve(bookList);
   });
 };
+
+// TODO: firebase関連のFunctionをまとめる
