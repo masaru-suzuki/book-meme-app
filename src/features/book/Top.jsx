@@ -1,13 +1,11 @@
-import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { initBookList } from '../../store/modules/bookSlice';
+import { useState } from 'react';
 import { ButtonBack } from '../../components/ButtonBack';
 import { VStack, Flex, Heading, IconButton, StackDivider, Button } from '@chakra-ui/react';
 import { EditIcon } from '@chakra-ui/icons';
 import FormEdit from './FormEdit';
 import FormAdd from './FormAdd';
 
-const BookRoot = ({ bookList, status, backToTop }) => {
+const BookRoot = ({ bookList, backToTop }) => {
   const [bookRootFlag, setBookRootFlag] = useState(''); // "" || "add" || "edit"
   const [editingBook, setEditingBook] = useState();
 
@@ -25,8 +23,7 @@ const BookRoot = ({ bookList, status, backToTop }) => {
           <ButtonBack label="TOP" cb={backToTop} />
           <VStack divider={<StackDivider borderColor="gray.200" />} spacing={4} align="stretch">
             <StackDivider borderColor="gray.200" />
-
-            {/* TODO: スライドで削除できるようにする */}
+            {/* TODO: フリックで削除できるようにする */}
             {bookList.map((book) => {
               return (
                 <Flex

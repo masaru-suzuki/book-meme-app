@@ -17,31 +17,8 @@ const quizSlice = createSlice({
       // // state
       state.quizList = newQuizList;
     },
-    update(state, { payload }) {
-      // // TODO: payloadで渡ってくるオブジェクトはfirebaseのオブジェクト型と揃える
-      // // 管理できないか？
-      // const bookList = [...state.bookList];
-      // const newBookList = bookList.map((book) => (book.id === payload.id ? payload : book));
-      // // firebase
-      // const bookRef = doc(db, 'books', payload.id);
-      // const newBook = { ...payload };
-      // updateDoc(bookRef, newBook);
-      // // localStorage
-      // localStorage.setItem('bookList', JSON.stringify(newBookList));
-      // // state
-      // state.bookList = newBookList;
-    },
-    remove(state, { payload }) {
-      // const bookList = [...state.bookList];
-      // const newBookList = bookList.filter((book) => book.id !== payload.id);
-      // // firebase
-      // const bookRef = doc(db, 'books', payload.id);
-      // deleteDoc(bookRef);
-      // // localStorage
-      // localStorage.setItem('bookList', JSON.stringify(newBookList));
-      // // state
-      // state.bookList = newBookList;
-    },
+    update(state, { payload }) {},
+    remove(state, { payload }) {},
   },
   extraReducers: (builder) => {
     builder

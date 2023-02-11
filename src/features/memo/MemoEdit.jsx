@@ -1,6 +1,6 @@
 import { ButtonBack } from '../../components/ButtonBack';
 import MemeList from './MemeList.jsx';
-import { Grid, Stack, Button, IconButton, Icon, Heading, Divider } from '@chakra-ui/react';
+import { IconButton, Icon, Heading, Divider } from '@chakra-ui/react';
 import { HiPlus } from 'react-icons/hi';
 import { useState } from 'react';
 import FormAdd from './FormAdd';
