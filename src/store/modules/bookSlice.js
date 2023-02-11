@@ -17,8 +17,8 @@ const localStorageBookList = {
 //   status: 'Loading...',
 // };
 
-const register = createSlice({
-  name: 'register',
+const bookSlice = createSlice({
+  name: 'bookSlice',
   initialState: localStorageBookList,
   reducers: {
     add(state, { payload }) {
@@ -82,10 +82,10 @@ const register = createSlice({
   },
 });
 
-const { add, remove, update } = register.actions;
+const { add, remove, update } = bookSlice.actions;
 
-const initState = createAsyncThunk('register/asyncInit', async (payload) => payload);
+const initState = createAsyncThunk('bookSlice/asyncInit', async (payload) => payload);
 
 export { add, remove, update, initState };
 
-export default register.reducer;
+export default bookSlice.reducer;

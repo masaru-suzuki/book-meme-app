@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import { add } from '../../store/modules/quizReducer.js';
+import { add } from '../../store/modules/quizSlice.js';
 import { nanoid } from 'nanoid';
 import {
   FormControl,

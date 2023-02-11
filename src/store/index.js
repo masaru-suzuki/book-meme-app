@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import reducer from './modules/register.js';
-import quizReducer from './modules/quizReducer';
+import bookReducer from './modules/bookSlice';
+import quizReducer from './modules/quizSlice';
 
 export default configureStore({
   reducer: {
-    register: reducer,
-    quizReducer: quizReducer,
+    bookReducer,
+    quizReducer,
   },
 });

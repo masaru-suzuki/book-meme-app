@@ -6,8 +6,8 @@ const localStorageBookList = {
   status: 'Loading...',
 };
 
-const quizReducer = createSlice({
-  name: 'quizReducer',
+const quizSlice = createSlice({
+  name: 'quizSlice',
   initialState: localStorageBookList,
   reducers: {
     add(state, { payload }) {
@@ -65,10 +65,10 @@ const quizReducer = createSlice({
   },
 });
 
-const { add, remove, update } = quizReducer.actions;
+const { add, remove, update } = quizSlice.actions;
 
-const initMemoList = createAsyncThunk('quizReducer/asyncInit', async (payload) => payload);
+const initMemoList = createAsyncThunk('quizSlice/asyncInit', async (payload) => payload);
 
 export { add, remove, update, initMemoList };
 
-export default quizReducer.reducer;
+export default quizSlice.reducer;
