@@ -4,7 +4,7 @@ import quizReducer from './modules/quizSlice';
 
 export default configureStore({
   reducer: {
-    bookReducer,
-    quizReducer,
+    book: bookReducer,
+    quiz: quizReducer,
   },
 });
