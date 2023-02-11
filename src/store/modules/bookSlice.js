@@ -1,7 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { doc, setDoc, updateDoc, deleteDoc } from 'firebase/firestore';
-import { fetchBookList } from '../../api/bookList';
-import db from '../../api/firebase.js';
+import { addBookDB, fetchBookList, removeBookDB, updateBookDB } from '../../api/book';
 
 const initialState = {
   // TODO: loadingをflagで管理する
@@ -14,31 +12,20 @@ const bookSlice = createSlice({
   initialState: initialState,
   reducers: {
     add(state, { payload }) {
+      addBookDB(payload);
       const newBookList = [...state.bookList, payload];
-      // firebase
-      setDoc(doc(db, 'books', payload.id), payload);
-      // state
       state.bookList = newBookList;
     },
     update(state, { payload }) {
-      // TODO: payloadで渡ってくるオブジェクトはfirebaseのオブジェクト型と揃える
-      // 管理できないか？
+      updateBookDB(payload);
       const bookList = [...state.bookList];
       const newBookList = bookList.map((book) => (book.id === payload.id ? payload : book));
-      // firebase
-      const bookRef = doc(db, 'books', payload.id);
-      const newBook = { ...payload };
-      updateDoc(bookRef, newBook);
-      // state
       state.bookList = newBookList;
     },
     remove(state, { payload }) {
+      removeBookDB(payload);
       const bookList = [...state.bookList];
       const newBookList = bookList.filter((book) => book.id !== payload.id);
-      // firebase
-      const bookRef = doc(db, 'books', payload.id);
-      deleteDoc(bookRef);
-      // state
       state.bookList = newBookList;
     },
   },
