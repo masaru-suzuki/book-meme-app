@@ -1,25 +1,17 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { doc, setDoc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { fetchBookList } from '../../api/bookList';
 import db from '../../api/firebase.js';
 
-const localStorageBookList = {
-  bookList: JSON.parse(localStorage.getItem('bookList')),
+const initialState = {
+  // TODO: loadingをflagで管理する
+  bookList: [],
   status: 'Loading...',
 };
 
-// const mock = {
-//   bookList: [
-//     {
-//       id: 'anietornsatirsent488888',
-//       title: 'test',
-//     },
-//   ],
-//   status: 'Loading...',
-// };
-
 const bookSlice = createSlice({
   name: 'bookSlice',
-  initialState: localStorageBookList,
+  initialState: initialState,
   reducers: {
     add(state, { payload }) {
       const newBookList = [...state.bookList, payload];
@@ -84,8 +76,8 @@ const bookSlice = createSlice({
 
 const { add, remove, update } = bookSlice.actions;
 
-const initState = createAsyncThunk('bookSlice/asyncInit', async (payload) => payload);
+const initBookList = createAsyncThunk('bookSlice/asyncInit', async () => await fetchBookList());
 
-export { add, remove, update, initState };
+export { add, remove, update, initBookList };
 
 export default bookSlice.reducer;

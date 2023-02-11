@@ -1,13 +1,22 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { initBookList } from '../../store/modules/bookSlice';
 import { ButtonBack } from '../../components/ButtonBack';
 import { VStack, Flex, Heading, IconButton, StackDivider, Button } from '@chakra-ui/react';
 import { EditIcon } from '@chakra-ui/icons';
 import FormEdit from './FormEdit';
 import FormAdd from './FormAdd';
+import { bookReducer } from '../../store/modules/bookSlice';
 
-const BookRoot = ({ bookList, backToTop }) => {
+const BookRoot = ({ backToTop }) => {
   const [bookRootFlag, setBookRootFlag] = useState(''); // "" || "add" || "edit"
   const [editingBook, setEditingBook] = useState();
+  const { status, bookList } = useSelector((state) => state.book);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(initBookList());
+  }, []);
 
   const handleEdit = (book) => {
     setBookRootFlag('edit');
@@ -21,6 +30,7 @@ const BookRoot = ({ bookList, backToTop }) => {
       {bookRootFlag === '' && (
         <>
           <ButtonBack label="TOP" cb={backToTop} />
+          <h1>{status}</h1>
           <VStack divider={<StackDivider borderColor="gray.200" />} spacing={4} align="stretch">
             <StackDivider borderColor="gray.200" />
 

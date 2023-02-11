@@ -16,22 +16,8 @@ const CustomListIcon = () => <Icon as={BiListPlus} width="24px" height="24px" op
 const CustomBookIcon = () => <Icon as={HiOutlineBookOpen} width="24px" height="24px" opacity="0.8" />;
 
 const Top = () => {
-  const dispatch = useDispatch();
   const [rootFlag, setRootFlag] = useState('');
-  const { bookList } = useSelector((state) => state.register);
   const backToTop = () => setRootFlag('');
-
-  // 非同期で書籍情報を取得（それまではlocalStorageのデータを表示)
-  useEffect(() => {
-    const init = async () => {
-      const dbBooks = await fetchBookList();
-      const dbQuizList = await fetchQuizList();
-      dispatch(initState(dbBooks));
-      dispatch(initMemoList(dbQuizList));
-    };
-
-    init();
-  }, []);
 
   return (
     <>
