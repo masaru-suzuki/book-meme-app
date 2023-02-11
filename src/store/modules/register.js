@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { doc, setDoc, updateDoc, deleteDoc } from 'firebase/firestore';
-import db from '../../../../api/firebase.js';
+import db from '../../api/firebase.js';
 
 const localStorageBookList = {
   bookList: JSON.parse(localStorage.getItem('bookList')),

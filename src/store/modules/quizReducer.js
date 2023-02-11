@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { addQuizDB } from '../../../../api/quizList.js';
+import { addQuizDB } from '../../api/quizList.js';
 
 const localStorageBookList = {
   bookList: JSON.parse(localStorage.getItem('quizList')),

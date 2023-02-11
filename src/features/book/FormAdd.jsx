@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { useForm, Controller, useFieldArray, useWatch } from 'react-hook-form';
-import { add } from './store/modules/register';
+import { add } from '../../store/modules/register';
 import { nanoid } from 'nanoid';
 import {
   FormControl,

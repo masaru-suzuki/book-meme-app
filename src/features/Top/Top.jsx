@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { initState } from '../book/store/modules/register';
+import { initState } from '../../store/modules/register';
 import { fetchBookList } from '../../api/bookList';
 import { fetchQuizList } from '../../api/quizList';
 import BookRoot from '../book/Top';
@@ -10,7 +10,7 @@ import ReviewRoot from '../Review/Top';
 import { Grid, Stack, Button, IconButton, Icon } from '@chakra-ui/react';
 import { HiOutlineBookOpen } from 'react-icons/hi';
 import { BiListPlus } from 'react-icons/bi';
-import { initMemoList } from '../book/store/modules/quizReducer';
+import { initMemoList } from '../../store/modules/quizReducer';
 
 const CustomListIcon = () => <Icon as={BiListPlus} width="24px" height="24px" opacity="0.8" />;
 const CustomBookIcon = () => <Icon as={HiOutlineBookOpen} width="24px" height="24px" opacity="0.8" />;

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { update, remove } from './store/modules/register';
+import { update, remove } from '../../store/modules/register';
 
 const Book = ({ id, title, toggleEdit }) => {
   const [editing, setEditing] = useState(false);

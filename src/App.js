@@ -1,7 +1,7 @@
 import React from 'react';
 import Top from './features/Top/Top';
 import './App.css';
-import store from './features/book/store';
+import store from './store';
 import { Provider } from 'react-redux';
 import { Grid } from '@chakra-ui/react';
 
