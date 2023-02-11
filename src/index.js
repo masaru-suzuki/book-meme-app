@@ -1,7 +1,9 @@
 import React from 'react';
+import { Provider } from 'react-redux';
 import { createRoot } from 'react-dom/client';
 import { extendTheme, ChakraProvider } from '@chakra-ui/react';
 import App from './App';
+import store from './store';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
 
@@ -21,7 +23,9 @@ const theme = extendTheme({ colors });
 root.render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
-      <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     </ChakraProvider>
   </React.StrictMode>
 );
