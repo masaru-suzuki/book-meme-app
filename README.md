@@ -61,6 +61,9 @@ firebase の DB で複数階層に対して ID 検索ができるのであれば
 - firebase の更新タイミングどうするか。
   初回レンダリングの時に firebase のデータを store に格納するのはいいんだけど、state を更新するたびに firebase に push する必要があるのか？
 
+- 初回レンダリング時に firebase から情報を取得して、初期化するのを TOP.jsx で行っていたが、コンポーネントに責任を持たせるのは良くない。そのため、redux に責任を持たせる必要がある。しかし、その場合、どこで初期化を行えばいいのかわからない。
+- [memo](https://necessary-taker-024.notion.site/redex-e3449c397c5e4854a1567d8f84249bc8)
+
 <hr>
 
 ## 佐川さん FB
