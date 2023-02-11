@@ -15,11 +15,8 @@ const bookSlice = createSlice({
   reducers: {
     add(state, { payload }) {
       const newBookList = [...state.bookList, payload];
+      // firebase
       setDoc(doc(db, 'books', payload.id), payload);
-
-      // localStorage
-      localStorage.setItem('bookList', JSON.stringify(newBookList));
-
       // state
       state.bookList = newBookList;
     },
@@ -28,47 +25,33 @@ const bookSlice = createSlice({
       // 管理できないか？
       const bookList = [...state.bookList];
       const newBookList = bookList.map((book) => (book.id === payload.id ? payload : book));
-
       // firebase
       const bookRef = doc(db, 'books', payload.id);
       const newBook = { ...payload };
       updateDoc(bookRef, newBook);
-
-      // localStorage
-      localStorage.setItem('bookList', JSON.stringify(newBookList));
-
       // state
       state.bookList = newBookList;
     },
     remove(state, { payload }) {
       const bookList = [...state.bookList];
       const newBookList = bookList.filter((book) => book.id !== payload.id);
-
       // firebase
       const bookRef = doc(db, 'books', payload.id);
       deleteDoc(bookRef);
-
-      // localStorage
-      localStorage.setItem('bookList', JSON.stringify(newBookList));
-
       // state
       state.bookList = newBookList;
     },
   },
   extraReducers: (builder) => {
     builder
-      // TODO: initialStateのstatusが表示されており、pendingの方は表示されないのを確認
-      .addCase(initState.pending, (state) => {
-        state.status = 'Loading(asyncThunk)';
+      .addCase(initBookList.pending, (state) => {
+        state.status = '...Loading(asyncThunk)';
       })
-      .addCase(initState.fulfilled, (state, { payload }) => {
+      .addCase(initBookList.fulfilled, (state, { payload }) => {
         state.status = '取得済み';
         state.bookList = payload;
-
-        // localStorage
-        localStorage.setItem('bookList', JSON.stringify(payload));
       })
-      .addCase(initState.rejected, (state) => {
+      .addCase(initBookList.rejected, (state) => {
         state.status = 'データの取得に失敗しました。';
       });
   },

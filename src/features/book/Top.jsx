@@ -6,7 +6,6 @@ import { VStack, Flex, Heading, IconButton, StackDivider, Button } from '@chakra
 import { EditIcon } from '@chakra-ui/icons';
 import FormEdit from './FormEdit';
 import FormAdd from './FormAdd';
-import { bookReducer } from '../../store/modules/bookSlice';
 
 const BookRoot = ({ backToTop }) => {
   const [bookRootFlag, setBookRootFlag] = useState(''); // "" || "add" || "edit"
