@@ -1,14 +1,15 @@
-import { Grid, VStack, StackDivider, Flex, Heading, IconButton, Box } from '@chakra-ui/react';
+import { VStack, StackDivider, Flex, Heading, IconButton, Box } from '@chakra-ui/react';
 import { EditIcon } from '@chakra-ui/icons';
 import { useSelector } from 'react-redux';
 
 const MemeList = ({ bookId }) => {
-  const { quizList } = useSelector((state) => state.quizReducer);
+  const { quizList, status } = useSelector((state) => state.quiz);
   const bookQuizList = quizList.filter((quiz) => quiz.bookId === bookId);
 
   if (bookQuizList.length) {
     return (
       <>
+        <h1>{status}</h1>
         <VStack divider={<StackDivider borderColor="gray.200" />} mt={4} spacing={4} align="stretch">
           {bookQuizList.map((quiz) => {
             return (

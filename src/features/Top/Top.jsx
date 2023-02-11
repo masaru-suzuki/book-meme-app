@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import BookRoot from '../book/Top';
 import MemoRoot from '../memo/Top';
 import RandomRoot from '../Random/Top';
@@ -6,13 +6,21 @@ import ReviewRoot from '../Review/Top';
 import { Grid, Stack, Button, IconButton, Icon } from '@chakra-ui/react';
 import { HiOutlineBookOpen } from 'react-icons/hi';
 import { BiListPlus } from 'react-icons/bi';
+import { useDispatch, useSelector } from 'react-redux';
+import { initBookList } from '../../store/modules/bookSlice';
 
 const CustomListIcon = () => <Icon as={BiListPlus} width="24px" height="24px" opacity="0.8" />;
 const CustomBookIcon = () => <Icon as={HiOutlineBookOpen} width="24px" height="24px" opacity="0.8" />;
 
 const Top = () => {
+  const { status, bookList } = useSelector((state) => state.book);
   const [rootFlag, setRootFlag] = useState('');
   const backToTop = () => setRootFlag('');
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(initBookList());
+  }, []);
 
   return (
     <>
@@ -48,8 +56,8 @@ const Top = () => {
       )}
       {rootFlag === 'review' && <ReviewRoot backToTop={backToTop} />}
       {rootFlag === 'random' && <RandomRoot backToTop={backToTop} />}
-      {rootFlag === 'add' && <MemoRoot backToTop={backToTop} />}
-      {rootFlag === 'edit' && <BookRoot backToTop={backToTop} />}
+      {rootFlag === 'add' && <MemoRoot backToTop={backToTop} bookList={bookList} status={status} />}
+      {rootFlag === 'edit' && <BookRoot backToTop={backToTop} bookList={bookList} status={status} />}
     </>
   );
 };

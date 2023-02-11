@@ -1,21 +1,18 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { addQuizDB } from '../../api/quizList.js';
+import { addQuizDB, fetchQuizList } from '../../api/quizList.js';
 
-const localStorageBookList = {
-  bookList: JSON.parse(localStorage.getItem('quizList')),
+const initialState = {
+  quizList: [],
   status: 'Loading...',
 };
 
 const quizSlice = createSlice({
   name: 'quizSlice',
-  initialState: localStorageBookList,
+  initialState: initialState,
   reducers: {
     add(state, { payload }) {
       const newQuizList = [...state.quizList, payload.newQuiz];
       addQuizDB(payload.id, payload.newQuiz);
-
-      // // localStorage
-      localStorage.setItem('bookList', JSON.stringify(newQuizList));
 
       // // state
       state.quizList = newQuizList;
@@ -49,17 +46,14 @@ const quizSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // TODO: initialStateのstatusが表示されており、pendingの方は表示されないのを確認
-      .addCase(initMemoList.pending, (state) => {
+      .addCase(initQuizList.pending, (state) => {
         state.status = 'Loading(asyncThunk)';
       })
-      .addCase(initMemoList.fulfilled, (state, { payload }) => {
+      .addCase(initQuizList.fulfilled, (state, { payload }) => {
         state.status = '取得済み';
         state.quizList = payload;
-
-        // localStorage
-        localStorage.setItem('quizList', JSON.stringify(payload));
       })
-      .addCase(initMemoList.rejected, (state) => {
+      .addCase(initQuizList.rejected, (state) => {
         state.status = 'データの取得に失敗しました。';
       });
   },
@@ -67,8 +61,8 @@ const quizSlice = createSlice({
 
 const { add, remove, update } = quizSlice.actions;
 
-const initMemoList = createAsyncThunk('quizSlice/asyncInit', async (payload) => payload);
+const initQuizList = createAsyncThunk('quizSlice/asyncInit', async (payload) => await fetchQuizList());
 
-export { add, remove, update, initMemoList };
+export { add, remove, update, initQuizList };
 
 export default quizSlice.reducer;

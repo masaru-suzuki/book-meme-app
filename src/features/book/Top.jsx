@@ -7,15 +7,9 @@ import { EditIcon } from '@chakra-ui/icons';
 import FormEdit from './FormEdit';
 import FormAdd from './FormAdd';
 
-const BookRoot = ({ backToTop }) => {
+const BookRoot = ({ bookList, status, backToTop }) => {
   const [bookRootFlag, setBookRootFlag] = useState(''); // "" || "add" || "edit"
   const [editingBook, setEditingBook] = useState();
-  const { status, bookList } = useSelector((state) => state.book);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(initBookList());
-  }, []);
 
   const handleEdit = (book) => {
     setBookRootFlag('edit');
@@ -29,7 +23,6 @@ const BookRoot = ({ backToTop }) => {
       {bookRootFlag === '' && (
         <>
           <ButtonBack label="TOP" cb={backToTop} />
-          <h1>{status}</h1>
           <VStack divider={<StackDivider borderColor="gray.200" />} spacing={4} align="stretch">
             <StackDivider borderColor="gray.200" />
 

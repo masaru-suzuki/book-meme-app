@@ -1,12 +1,19 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ButtonBack } from '../../components/ButtonBack';
 import { VStack, Flex, Heading, IconButton, StackDivider, Button } from '@chakra-ui/react';
 import { EditIcon } from '@chakra-ui/icons';
 import MemoEdit from './MemoEdit';
+import { useDispatch } from 'react-redux';
+import { initQuizList } from '../../store/modules/quizSlice';
 
 const Top = ({ bookList, backToTop }) => {
   const [memoRootFlag, setMemoRootFlag] = useState('');
   const [editingBook, setEditingBook] = useState();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(initQuizList());
+  }, []);
 
   const handleEdit = (book) => {
     setMemoRootFlag('edit');
