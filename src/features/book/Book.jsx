@@ -1,40 +1,21 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { update, remove } from '../../store/modules/bookSlice';
+import FormConfirm from './FormConfirm';
+import FixedButton from './FixedButton';
+import MemoList from './MemoList';
+import { Box } from '@chakra-ui/react';
 
-const Book = ({ id, title, toggleEdit }) => {
-  const [editing, setEditing] = useState(false);
-  const [editText, setEditText] = useState(title);
-  const dispatch = useDispatch();
+const Book = ({ book, backToBookRoot }) => {
+  const [bookFlag, setBookFlag] = useState(''); // "" || "bookEdit" || "delete" || "memoEdit"
 
-  // TODO: 編集機能実装
-  const edit = () => {
-    console.log('edit');
-    setEditing((prev) => !prev);
-    dispatch(update({ id, title: editText }));
-  };
-
-  const deleteBook = () => {
-    console.log('remove');
-    dispatch(remove({ id }));
-  };
-
-  if (editing) {
-    return (
-      <li>
-        <input type="text" value={editText} onChange={(e) => setEditText(e.target.value)} />
-        <button onClick={edit}>完了する</button>
-      </li>
-    );
-  } else {
-    return (
-      <li>
-        {editText}
-        <button onClick={toggleEdit}>編集する</button>
-        <button onClick={deleteBook}>削除する</button>
-      </li>
-    );
-  }
+  return (
+    <>
+      <FormConfirm book={book} backToBookRoot={backToBookRoot} bookFlag={bookFlag} />
+      <FixedButton />
+      <Box mt={12}>
+        <MemoList bookId={book.id} />
+      </Box>
+    </>
+  );
 };
 
 export default Book;

@@ -4,13 +4,14 @@ import { VStack, Flex, Heading, IconButton, StackDivider, Button } from '@chakra
 import { EditIcon } from '@chakra-ui/icons';
 import FormEdit from './FormEdit';
 import FormAdd from './FormAdd';
+import Book from './Book';
 
 const BookRoot = ({ bookList, backToTop }) => {
-  const [bookRootFlag, setBookRootFlag] = useState(''); // "" || "add" || "edit"
+  const [bookRootFlag, setBookRootFlag] = useState(''); // "" || "add" || "edit" || "detail"
   const [editingBook, setEditingBook] = useState();
 
   const handleEdit = (book) => {
-    setBookRootFlag('edit');
+    setBookRootFlag('detail');
     setEditingBook(book);
   };
 
@@ -55,10 +56,10 @@ const BookRoot = ({ bookList, backToTop }) => {
           <FormAdd />
         </>
       )}
-      {bookRootFlag === 'edit' && (
+      {bookRootFlag === 'detail' && (
         <>
           <ButtonBack label="BACK" cb={backToBookRoot} />
-          <FormEdit book={editingBook} backToBookRoot={backToBookRoot} />
+          <Book book={editingBook} backToBookRoot={backToBookRoot} />
         </>
       )}
     </>
