@@ -33,15 +33,6 @@ const Top = () => {
               h={14}
               aria-label="Search database"
               colorScheme={'gray'}
-              icon={<CustomListIcon />}
-              onClick={() => setRootFlag('add')}
-            />
-            <IconButton
-              borderRadius="100%"
-              w={14}
-              h={14}
-              aria-label="Search database"
-              colorScheme={'gray'}
               icon={<CustomBookIcon />}
               onClick={() => setRootFlag('edit')}
             />
@@ -50,7 +41,7 @@ const Top = () => {
       )}
       {rootFlag === 'review' && <ReviewRoot backToTop={backToTop} />}
       {rootFlag === 'random' && <RandomRoot backToTop={backToTop} />}
-      {rootFlag === 'add' && <MemoRoot backToTop={backToTop} bookList={bookList} status={status} />}
+      {/* {rootFlag === 'add' && <MemoRoot backToTop={backToTop} bookList={bookList} status={status} />} */}
       {rootFlag === 'edit' && <BookRoot backToTop={backToTop} bookList={bookList} status={status} />}
     </>
   );
