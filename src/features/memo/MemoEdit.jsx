@@ -7,15 +7,15 @@ import FormAdd from './FormAdd';
 
 const CustomListIcon = () => <Icon as={HiPlus} width="24px" height="24px" opacity="0.8" />;
 
-const MemoEdit = ({ book, backToMemoRoot }) => {
+const MemoEdit = ({ book, backToBookDetail }) => {
   const [bookMemoFlag, setBookMemoFlag] = useState('');
 
   // BACKボタンの戻り先を画面によって変えている
-  const toggleBackTo = () => (bookMemoFlag === '' ? backToMemoRoot() : setBookMemoFlag(''));
+  // const toggleBackTo = () => (bookMemoFlag === '' ? backToMemoRoot() : setBookMemoFlag(''));
 
   return (
     <>
-      <ButtonBack label="BACK" cb={toggleBackTo} />
+      <ButtonBack label="BACK" cb={backToBookDetail} />
       <Heading mt={'5'} pb={'2'}>
         {book.title}
       </Heading>

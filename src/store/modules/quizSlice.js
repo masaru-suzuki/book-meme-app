@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { addQuizDB, fetchQuizList } from '../../api/quizList.js';
+import { addQuizDB, fetchQuizList, updateQuizDB } from '../../api/quizList.js';
 
 const initialState = {
   quizList: [],
@@ -12,12 +12,17 @@ const quizSlice = createSlice({
   reducers: {
     add(state, { payload }) {
       const newQuizList = [...state.quizList, payload.newQuiz];
-      addQuizDB(payload.id, payload.newQuiz);
+      addQuizDB(payload);
 
       // // state
       state.quizList = newQuizList;
     },
-    update(state, { payload }) {},
+    update(state, { payload }) {
+      updateQuizDB(payload);
+      const quizList = [...state.quizList];
+      const newQuizList = quizList.map((quiz) => (quiz.id === payload.id ? payload : quiz));
+      state.quizList = newQuizList;
+    },
     remove(state, { payload }) {},
   },
   extraReducers: (builder) => {

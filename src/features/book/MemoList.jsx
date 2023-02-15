@@ -2,7 +2,7 @@ import { VStack, StackDivider, Flex, Heading, IconButton, Box, Button } from '@c
 import { EditIcon } from '@chakra-ui/icons';
 import { useSelector } from 'react-redux';
 
-const MemoList = ({ bookId, setBookFlag }) => {
+const MemoList = ({ bookId, changeMemoEditMode }) => {
   const { quizList, status } = useSelector((state) => state.quiz);
   const bookQuizList = quizList.filter((quiz) => quiz.bookId === bookId);
 
@@ -19,7 +19,7 @@ const MemoList = ({ bookId, setBookFlag }) => {
                 alignItems="center"
                 gap="6"
                 justifyContent="space-between"
-                onClick={() => setBookFlag('memoEdit')}
+                onClick={() => changeMemoEditMode(quiz)}
               >
                 <Heading size="sm">{quiz.quiz}</Heading>
               </Flex>

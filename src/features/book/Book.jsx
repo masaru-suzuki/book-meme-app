@@ -7,10 +7,13 @@ import { remove } from '../../store/modules/bookSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import FormConfirm from './FormConfirm';
 import FormEdit from './FormEdit';
+import MemoAdd from './MemoAdd';
+import MemoEdit from './MemoEdit';
 
 const Book = ({ bookId, backToBookRoot }) => {
   const dispatch = useDispatch();
   const { bookList } = useSelector((state) => state.book);
+  const [editingMemo, setEditingMemo] = useState({});
 
   // FIXME: /book/top.jsx でglobal state読み込んで、それを子コンポーネントに渡した際、更新を検知されない。
   // TODO: どうしてか調べる...
@@ -26,6 +29,11 @@ const Book = ({ bookId, backToBookRoot }) => {
 
   const backToBookDetail = () => setBookFlag('');
 
+  const changeMemoEditMode = (memo) => {
+    setBookFlag('memoEdit');
+    setEditingMemo(memo);
+  };
+
   return (
     <>
       {bookFlag === '' && (
@@ -37,7 +45,7 @@ const Book = ({ bookId, backToBookRoot }) => {
           </Button>
           <FixedButton setBookFlag={setBookFlag} />
           <Box mt={12}>
-            <MemoList bookId={book.id} setBookFlag={setBookFlag} />
+            <MemoList bookId={book.id} changeMemoEditMode={changeMemoEditMode} />
           </Box>
           {/* TODO: add modal confirm action */}
           <Box mt={6}>
@@ -56,6 +64,7 @@ const Book = ({ bookId, backToBookRoot }) => {
       {bookFlag === 'memoEdit' && (
         <>
           <ButtonBack label="BACK" cb={backToBookDetail} />
+          <MemoEdit editingMemo={editingMemo} backToBookDetail={backToBookDetail} />
         </>
       )}
       {bookFlag === 'memoAdd' && (

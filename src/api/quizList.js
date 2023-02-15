@@ -19,6 +19,25 @@ export const fetchQuizList = () => {
   });
 };
 
-export const addQuizDB = (id, quiz) => {
-  setDoc(doc(db, 'quizList', id), quiz);
+const quizRef = (id) => doc(db, 'quizList', id);
+
+/**
+ * firebaseにクイズを登録する
+ */
+export const addQuizDB = (quiz) => {
+  setDoc(quizRef(quiz.id), quiz);
+};
+
+/**
+ * firebaseのクイズを更新する
+ */
+export const updateQuizDB = (quiz) => {
+  updateDoc(quizRef(quiz.id), quiz);
+};
+
+/**
+ * firebaseからクイズを削除する
+ */
+export const removeQuizDB = (quiz) => {
+  deleteDoc(quizRef(quiz.id));
 };
