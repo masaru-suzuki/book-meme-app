@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import FixedButton from './FixedButton';
 import MemoList from './MemoList';
+import { ButtonBack } from '../../components/ButtonBack';
 import { Box, Button } from '@chakra-ui/react';
 import { remove } from '../../store/modules/bookSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import Form from './Form';
+import FormConfirm from './FormConfirm';
+import FormEdit from './FormEdit';
 
 const Book = ({ bookId, backToBookRoot }) => {
   const dispatch = useDispatch();
@@ -14,24 +16,59 @@ const Book = ({ bookId, backToBookRoot }) => {
   // TODO: どうしてか調べる...
   const book = bookList.find((book) => book.id === bookId);
 
-  const [bookFlag, setBookFlag] = useState(''); // "" || "bookEdit" || "delete" || "memoEdit"
+  const [bookFlag, setBookFlag] = useState(''); // "" || "bookEdit" || "delete" || "memoAdd" || "memoEdit"
+
   const removeBook = () => {
-    backToBookRoot();
-    dispatch(remove(book));
+    // backToBookRoot();
+    // dispatch(remove(book));
+    setBookFlag('delete');
   };
+
+  const backToBookDetail = () => setBookFlag('');
+
   return (
     <>
-      <Form book={book} backToBookRoot={backToBookRoot} />
-      <FixedButton />
-      <Box mt={12}>
-        <MemoList bookId={book.id} />
-      </Box>
-      {/* TODO: add modal confirm action */}
-      <Box mt={6}>
-        <Button onClick={removeBook} colorScheme="red" w={'100%'}>
-          本を削除
-        </Button>
-      </Box>
+      {bookFlag === '' && (
+        <>
+          <ButtonBack label="BACK" cb={backToBookRoot} />
+          <FormConfirm book={book} />
+          <Button w={'100%'} mt={4} colorScheme="linkedin" onClick={() => setBookFlag('bookEdit')}>
+            編集する
+          </Button>
+          <FixedButton setBookFlag={setBookFlag} />
+          <Box mt={12}>
+            <MemoList bookId={book.id} setBookFlag={setBookFlag} />
+          </Box>
+          {/* TODO: add modal confirm action */}
+          <Box mt={6}>
+            <Button onClick={removeBook} colorScheme="red" w={'100%'}>
+              本を削除
+            </Button>
+          </Box>
+        </>
+      )}
+      {bookFlag === 'bookEdit' && (
+        <>
+          <ButtonBack label="BACK" cb={backToBookDetail} />
+          <FormEdit book={book} backToBookDetail={backToBookDetail} />
+        </>
+      )}
+      {bookFlag === 'memoEdit' && (
+        <>
+          <ButtonBack label="BACK" cb={backToBookDetail} />
+        </>
+      )}
+      {bookFlag === 'memoAdd' && (
+        <>
+          <ButtonBack label="BACK" cb={backToBookDetail} />
+        </>
+      )}
+      {bookFlag === 'delete' && (
+        <>
+          <ButtonBack label="BACK" cb={backToBookDetail} />
+          <p>delete</p>
+        </>
+      )}
     </>
   );
 };

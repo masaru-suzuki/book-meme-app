@@ -7,7 +7,7 @@ const CustomListIcon = () => <Icon as={BiListPlus} width="24px" height="24px" op
 const CustomBookIcon = () => <Icon as={MdOutlineModeEditOutline} width="24px" height="24px" opacity="0.8" />;
 const CustomTrashIcon = () => <Icon as={HiOutlineTrash} width="5" height="5" opacity="0.8" />;
 
-const FixedButton = () => {
+const FixedButton = ({ setBookFlag }) => {
   return (
     <Stack position="fixed" bottom="5" right="5" direction="column" spacing={2} align="center">
       <IconButton
@@ -17,8 +17,7 @@ const FixedButton = () => {
         aria-label="Search database"
         colorScheme={'gray'}
         icon={<CustomListIcon />}
-
-        // onClick={() => setRootFlag('add')}
+        onClick={() => setBookFlag('memoAdd')}
       />
     </Stack>
   );

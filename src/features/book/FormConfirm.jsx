@@ -41,9 +41,6 @@ const FormConfirm = ({ book, toggleEditMode }) => {
           </Grid>
         </VStack>
       </form>
-      <Button w={'100%'} mt={4} colorScheme="linkedin" onClick={toggleEditMode}>
-        編集する
-      </Button>
     </>
   );
 };

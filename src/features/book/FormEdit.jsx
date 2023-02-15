@@ -22,7 +22,7 @@ import { useEffect, useState } from 'react';
 
 const CustomListIcon = () => <Icon as={HiOutlineTrash} width="5" height="5" opacity="0.8" />;
 
-const FormEdit = ({ book, toggleEditMode }) => {
+const FormEdit = ({ book, backToBookDetail }) => {
   const dispatch = useDispatch();
   const { id, title, reason, purpose } = book;
 
@@ -52,13 +52,13 @@ const FormEdit = ({ book, toggleEditMode }) => {
     };
 
     dispatch(update(newBook));
-    toggleEditMode();
+    backToBookDetail();
   }
 
   // 本の削除
   const removeBook = () => {
     dispatch(bookRemove(book));
-    toggleEditMode();
+    backToBookDetail();
   };
 
   // Formの動的処理
