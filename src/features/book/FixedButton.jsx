@@ -20,24 +20,6 @@ const FixedButton = () => {
 
         // onClick={() => setRootFlag('add')}
       />
-      <IconButton
-        borderRadius="100%"
-        w={14}
-        h={14}
-        aria-label="Search database"
-        colorScheme={'gray'}
-        icon={<CustomBookIcon />}
-        // onClick={() => setRootFlag('edit')}
-      />
-      <IconButton
-        borderRadius="100%"
-        w={14}
-        h={14}
-        aria-label="Search database"
-        colorScheme={'gray'}
-        icon={<CustomTrashIcon />}
-        // onClick={() => setRootFlag('edit')}
-      />
     </Stack>
   );
 };
