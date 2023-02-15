@@ -1,4 +1,4 @@
-import { VStack, StackDivider, Flex, Heading, IconButton, Box } from '@chakra-ui/react';
+import { VStack, StackDivider, Flex, Heading, IconButton, Box, Button } from '@chakra-ui/react';
 import { EditIcon } from '@chakra-ui/icons';
 import { useSelector } from 'react-redux';
 
@@ -10,7 +10,8 @@ const MemoList = ({ bookId }) => {
     return (
       <>
         <Heading size="md">メモ一覧</Heading>
-        <VStack divider={<StackDivider borderColor="gray.200" />} mt={8} spacing={4} align="stretch">
+        <VStack divider={<StackDivider borderColor="gray.200" />} mt={0} spacing={4} align="stretch">
+          <StackDivider borderColor="gray.200" />
           {bookQuizList.map((quiz) => {
             return (
               <Flex
