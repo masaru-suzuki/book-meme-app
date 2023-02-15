@@ -59,7 +59,7 @@ const BookRoot = ({ bookList, backToTop }) => {
       {bookRootFlag === 'detail' && (
         <>
           <ButtonBack label="BACK" cb={backToBookRoot} />
-          <Book book={editingBook} backToBookRoot={backToBookRoot} />
+          <Book bookId={editingBook.id} backToBookRoot={backToBookRoot} />
         </>
       )}
     </>

@@ -1,14 +1,19 @@
 import { useState } from 'react';
-import FormConfirm from './FormConfirm';
 import FixedButton from './FixedButton';
 import MemoList from './MemoList';
 import { Box, Button } from '@chakra-ui/react';
 import { remove } from '../../store/modules/bookSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Form from './Form';
 
-const Book = ({ book, backToBookRoot }) => {
+const Book = ({ bookId, backToBookRoot }) => {
   const dispatch = useDispatch();
+  const { bookList } = useSelector((state) => state.book);
+
+  // FIXME: /book/top.jsx でglobal state読み込んで、それを子コンポーネントに渡した際、更新を検知されない。
+  // TODO: どうしてか調べる...
+  const book = bookList.find((book) => book.id === bookId);
+
   const [bookFlag, setBookFlag] = useState(''); // "" || "bookEdit" || "delete" || "memoEdit"
   const removeBook = () => {
     backToBookRoot();
@@ -16,7 +21,7 @@ const Book = ({ book, backToBookRoot }) => {
   };
   return (
     <>
-      <Form book={book} backToBookRoot={backToBookRoot} bookFlag={bookFlag} />
+      <Form book={book} backToBookRoot={backToBookRoot} />
       <FixedButton />
       <Box mt={12}>
         <MemoList bookId={book.id} />
