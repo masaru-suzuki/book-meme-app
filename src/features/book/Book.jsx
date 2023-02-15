@@ -5,6 +5,7 @@ import MemoList from './MemoList';
 import { Box, Button } from '@chakra-ui/react';
 import { remove } from '../../store/modules/bookSlice';
 import { useDispatch } from 'react-redux';
+import Form from './Form';
 
 const Book = ({ book, backToBookRoot }) => {
   const dispatch = useDispatch();
@@ -15,7 +16,7 @@ const Book = ({ book, backToBookRoot }) => {
   };
   return (
     <>
-      <FormConfirm book={book} backToBookRoot={backToBookRoot} bookFlag={bookFlag} />
+      <Form book={book} backToBookRoot={backToBookRoot} bookFlag={bookFlag} />
       <FixedButton />
       <Box mt={12}>
         <MemoList bookId={book.id} />
