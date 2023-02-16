@@ -23,17 +23,8 @@ const Book = ({ bookId, backToBookRoot }) => {
   // TODO: どうしてか調べる...
   const book = bookList.find((book) => book.id === bookId);
 
-  // "" || "bookEdit" || "delete" || "memoAdd" || "memoEdit"
+  // "" || "bookEdit" || "memoAdd" || "memoEdit"
   const [bookFlag, setBookFlag] = useState('');
-
-  /**
-   * 本の削除
-   */
-  const removeBook = () => {
-    // backToBookRoot();
-    // dispatch(remove(bookId));
-    setBookFlag('delete');
-  };
 
   /**
    * 書籍詳細TOPへ戻る
@@ -73,7 +64,6 @@ const Book = ({ bookId, backToBookRoot }) => {
           <Box mt={12}>
             <MemoList bookId={book.id} changeMemoEditMode={changeMemoEditMode} />
           </Box>
-          {/* TODO: add modal confirm action */}
           <AlertModal isOpen={isOpen} onClose={onClose} handleRemove={handleRemove} />
           <Box mt={6}>
             <Button onClick={onOpen} colorScheme="red" w={'100%'}>
@@ -98,12 +88,6 @@ const Book = ({ bookId, backToBookRoot }) => {
         <>
           <ButtonBack label="BACK" cb={backToBookDetail} />
           <MemoAdd book={book} />
-        </>
-      )}
-      {bookFlag === 'delete' && (
-        <>
-          <ButtonBack label="BACK" cb={backToBookDetail} />
-          <p>delete</p>
         </>
       )}
     </>
