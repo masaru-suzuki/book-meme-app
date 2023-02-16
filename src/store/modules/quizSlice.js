@@ -11,10 +11,11 @@ const quizSlice = createSlice({
   initialState: initialState,
   reducers: {
     add(state, { payload }) {
-      const newQuizList = [...state.quizList, payload.newQuiz];
+      console.log(payload);
+      const newQuizList = [...state.quizList, payload];
       addQuizDB(payload);
 
-      // // state
+      // state
       state.quizList = newQuizList;
     },
     update(state, { payload }) {

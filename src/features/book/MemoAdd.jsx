@@ -13,8 +13,9 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 
-const MemoAdd = ({ bookId, bookTitle }) => {
+const MemoAdd = ({ book }) => {
   const dispatch = useDispatch();
+  const { id: bookId, title: bookTitle } = book;
 
   const {
     handleSubmit,
@@ -33,8 +34,7 @@ const MemoAdd = ({ bookId, bookTitle }) => {
       answer: values.answer,
       stage: 0,
     };
-    // TODO: 今日の復習するタイミングリストに登録する=>復習のコレクション作成？データの管理に悩む
-    dispatch(add({ id, newQuiz }));
+    dispatch(add(newQuiz));
     reset();
   }
 

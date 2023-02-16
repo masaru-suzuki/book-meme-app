@@ -70,6 +70,7 @@ const Book = ({ bookId, backToBookRoot }) => {
       {bookFlag === 'memoAdd' && (
         <>
           <ButtonBack label="BACK" cb={backToBookDetail} />
+          <MemoAdd book={book} />
         </>
       )}
       {bookFlag === 'delete' && (
