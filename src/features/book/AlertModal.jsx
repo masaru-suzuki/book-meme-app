@@ -19,15 +19,13 @@ const AlertModal = ({ isOpen, onClose, handleRemove }) => {
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
             本を削除しますか？
           </AlertDialogHeader>
-
           <AlertDialogBody>登録されているメモなども消えます。</AlertDialogBody>
-
           <AlertDialogFooter>
             <Button ref={cancelRef} onClick={onClose}>
-              Cancel
+              キャンセル
             </Button>
             <Button colorScheme="red" onClick={handleRemove} ml={3}>
-              Delete
+              削除
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
