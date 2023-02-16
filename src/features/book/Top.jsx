@@ -34,12 +34,7 @@ const BookRoot = ({ bookList, backToTop }) => {
                   onClick={() => handleEdit(book)}
                 >
                   <Heading size="sm">{book.title}</Heading>
-                  <IconButton
-                    variant={'ghost'}
-                    size={'xs'}
-                    aria-label="Search database"
-                    icon={<EditIcon w={4} h={4} />}
-                  />
+                  <IconButton variant={'ghost'} aria-label="Search database" icon={<EditIcon w={4} h={4} />} />
                 </Flex>
               );
             })}

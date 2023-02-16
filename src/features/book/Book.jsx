@@ -2,7 +2,7 @@ import { useState } from 'react';
 import FixedButton from './FixedButton';
 import MemoList from './MemoList';
 import { ButtonBack } from '../../components/ButtonBack';
-import { Box, Button } from '@chakra-ui/react';
+import { Box, Button, useDisclosure } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import FormConfirm from './FormConfirm';
 import FormEdit from './FormEdit';
@@ -25,14 +25,24 @@ const Book = ({ bookId, backToBookRoot }) => {
   // "" || "bookEdit" || "delete" || "memoAdd" || "memoEdit"
   const [bookFlag, setBookFlag] = useState('');
 
+  /**
+   * 本の削除
+   */
   const removeBook = () => {
     // backToBookRoot();
     // dispatch(remove(bookId));
     setBookFlag('delete');
   };
 
+  /**
+   * 書籍詳細TOPへ戻る
+   */
   const backToBookDetail = () => setBookFlag('');
 
+  /**
+   * メモの編集画面に遷移する
+   * @param {object} memo 編集するクイズ
+   */
   const changeMemoEditMode = (memo) => {
     setBookFlag('memoEdit');
     setEditingMemo(memo);
