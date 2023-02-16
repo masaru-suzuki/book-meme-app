@@ -40,6 +40,6 @@ export const updateBookDB = (book) => {
 /**
  * firebaseから本を削除する
  */
-export const removeBookDB = (book) => {
-  deleteDoc(bookRef(book.id));
+export const removeBookDB = (id) => {
+  deleteDoc(bookRef(id));
 };

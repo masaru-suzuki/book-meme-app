@@ -3,14 +3,16 @@ import FixedButton from './FixedButton';
 import MemoList from './MemoList';
 import { ButtonBack } from '../../components/ButtonBack';
 import { Box, Button } from '@chakra-ui/react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import FormConfirm from './FormConfirm';
 import FormEdit from './FormEdit';
 import MemoAdd from './MemoAdd';
 import MemoEdit from './MemoEdit';
+import { remove } from '../../store/modules/bookSlice';
 
 // const Book = ({ book, backToBookRoot }) => {
 const Book = ({ bookId, backToBookRoot }) => {
+  const dispatch = useDispatch();
   // console.log(book);
 
   const { bookList } = useSelector((state) => state.book);
@@ -25,7 +27,7 @@ const Book = ({ bookId, backToBookRoot }) => {
 
   const removeBook = () => {
     // backToBookRoot();
-    // dispatch(remove(book));
+    dispatch(remove(bookId));
     setBookFlag('delete');
   };
 

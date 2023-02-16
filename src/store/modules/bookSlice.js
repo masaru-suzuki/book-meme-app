@@ -11,21 +11,30 @@ const bookSlice = createSlice({
   name: 'bookSlice',
   initialState: initialState,
   reducers: {
+    /**
+     * @param {object} payload 登録する本のオブジェクト
+     */
     add(state, { payload }) {
       addBookDB(payload);
       const newBookList = [...state.bookList, payload];
       state.bookList = newBookList;
     },
+    /**
+     * @param {object} payload 更新する本のオブジェクト
+     */
     update(state, { payload }) {
       updateBookDB(payload);
       const bookList = [...state.bookList];
       const newBookList = bookList.map((book) => (book.id === payload.id ? payload : book));
       state.bookList = newBookList;
     },
+    /**
+     * @param {string} payload 削除する本のid
+     */
     remove(state, { payload }) {
       removeBookDB(payload);
       const bookList = [...state.bookList];
-      const newBookList = bookList.filter((book) => book.id !== payload.id);
+      const newBookList = bookList.filter((book) => book.id !== payload);
       state.bookList = newBookList;
     },
   },
