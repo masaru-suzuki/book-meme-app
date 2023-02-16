@@ -1,9 +1,8 @@
-import { VStack, StackDivider, Flex, Heading, IconButton, Box, Button } from '@chakra-ui/react';
-import { EditIcon } from '@chakra-ui/icons';
+import { VStack, StackDivider, Flex, Heading, Box } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 
 const MemoList = ({ bookId, changeMemoEditMode }) => {
-  const { quizList, status } = useSelector((state) => state.quiz);
+  const { quizList } = useSelector((state) => state.quiz);
   const bookQuizList = quizList.filter((quiz) => quiz.bookId === bookId);
 
   if (bookQuizList.length) {

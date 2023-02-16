@@ -1,6 +1,6 @@
-import { FormLabel, VStack, StackDivider, Input, Grid, Box, Button } from '@chakra-ui/react';
+import { FormLabel, VStack, StackDivider, Input, Grid, Box } from '@chakra-ui/react';
 
-const FormConfirm = ({ book, toggleEditMode }) => {
+const FormConfirm = ({ book }) => {
   // MEMO: 編集画面と共用にできればと思ったが、form のonSubmitによって送信してしまうため、使い回しできなかった。
   const { title, reason, purpose } = book;
 

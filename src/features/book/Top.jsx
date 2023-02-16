@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { ButtonBack } from '../../components/ButtonBack';
 import { VStack, Flex, Heading, IconButton, StackDivider, Button } from '@chakra-ui/react';
 import { EditIcon } from '@chakra-ui/icons';
-import FormEdit from './FormEdit';
 import FormAdd from './FormAdd';
 import Book from './Book';
 
@@ -58,6 +57,9 @@ const BookRoot = ({ bookList, backToTop }) => {
       )}
       {bookRootFlag === 'detail' && (
         <>
+          <ButtonBack label="BACK" cb={backToBookRoot} />
+          {/* TODO: どうして値が更新されないのか？ */}
+          {/* <Book book={editingBook} backToBookRoot={backToBookRoot} /> */}
           <Book bookId={editingBook.id} backToBookRoot={backToBookRoot} />
         </>
       )}

@@ -4,7 +4,6 @@ import db from './firebase';
 /**
  * firebaseからクイズの情報を一括取得
  */
-// TODO: fetchBookListと
 export const fetchQuizList = () => {
   return new Promise((resolve) => {
     const asyncFunc = async () => {

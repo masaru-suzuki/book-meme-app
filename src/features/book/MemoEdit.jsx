@@ -1,7 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { update } from '../../store/modules/quizSlice.js';
-import { nanoid } from 'nanoid';
 import {
   FormControl,
   FormLabel,
@@ -20,7 +19,6 @@ const MemoEdit = ({ editingMemo, backToBookDetail }) => {
   const {
     handleSubmit,
     register,
-    reset,
     formState: { errors, isSubmitting },
   } = useForm();
 
