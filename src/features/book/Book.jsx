@@ -27,7 +27,7 @@ const Book = ({ bookId, backToBookRoot }) => {
 
   const removeBook = () => {
     // backToBookRoot();
-    dispatch(remove(bookId));
+    // dispatch(remove(bookId));
     setBookFlag('delete');
   };
 
