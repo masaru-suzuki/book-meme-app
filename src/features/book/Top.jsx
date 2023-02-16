@@ -52,7 +52,7 @@ const BookRoot = ({ bookList, backToTop }) => {
       {bookRootFlag === 'add' && (
         <>
           <ButtonBack label="BACK" cb={backToBookRoot} />
-          <FormAdd />
+          <FormAdd backToBookRoot={backToBookRoot} />
         </>
       )}
       {bookRootFlag === 'detail' && (

@@ -22,14 +22,13 @@ import { useEffect, useState } from 'react';
 
 const CustomListIcon = () => <Icon as={HiOutlineTrash} width="5" height="5" opacity="0.8" />;
 
-const FormAdd = () => {
+const FormAdd = ({ backToBookRoot }) => {
   const dispatch = useDispatch();
 
   const {
     handleSubmit,
     register,
     watch,
-    reset,
     control,
     formState: { errors, isSubmitting },
   } = useForm();
@@ -43,8 +42,7 @@ const FormAdd = () => {
       purpose: [values.purpose1, values.purpose2, values.purpose3, ...values.advancedPurpose],
     };
     dispatch(add(newBook));
-    reset();
-    remove();
+    backToBookRoot();
   }
 
   // Formの動的処理
