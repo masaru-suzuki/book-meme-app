@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { addQuizDB, fetchQuizList, updateQuizDB } from '../../api/quiz.js';
+import { addQuizDB, fetchQuizList, removeQuizDB, updateQuizDB } from '../../api/quiz.js';
 
 const initialState = {
   quizList: [],
@@ -10,18 +10,32 @@ const quizSlice = createSlice({
   name: 'quizSlice',
   initialState: initialState,
   reducers: {
+    /**
+     * @param {object} payload 登録するクイズのオブジェクト
+     */
     add(state, { payload }) {
       const newQuizList = [...state.quizList, payload];
       addQuizDB(payload);
       state.quizList = newQuizList;
     },
+    /**
+     * @param {object} payload 登録するクイズのオブジェクト
+     */
     update(state, { payload }) {
       updateQuizDB(payload);
       const quizList = [...state.quizList];
       const newQuizList = quizList.map((quiz) => (quiz.id === payload.id ? payload : quiz));
       state.quizList = newQuizList;
     },
-    remove(state, { payload }) {},
+    /**
+     * @param {string} payload id
+     */
+    remove(state, { payload }) {
+      removeQuizDB(payload);
+      const quizList = [...state.quizList];
+      const newQuizList = quizList.filter((quiz) => quiz.id !== payload);
+      state.quizList = newQuizList;
+    },
   },
   extraReducers: (builder) => {
     builder

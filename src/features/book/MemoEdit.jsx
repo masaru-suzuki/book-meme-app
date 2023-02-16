@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import { update } from '../../store/modules/quizSlice.js';
+import { remove, update } from '../../store/modules/quizSlice.js';
 import {
   FormControl,
   FormLabel,
@@ -10,6 +10,7 @@ import {
   Input,
   Button,
   Textarea,
+  Grid,
 } from '@chakra-ui/react';
 
 const MemoEdit = ({ editingMemo, backToBookDetail }) => {
@@ -35,6 +36,11 @@ const MemoEdit = ({ editingMemo, backToBookDetail }) => {
     dispatch(update(newQuiz));
     backToBookDetail();
   }
+
+  const handleRemove = () => {
+    dispatch(remove(id));
+    backToBookDetail();
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -70,9 +76,14 @@ const MemoEdit = ({ editingMemo, backToBookDetail }) => {
           />
           <FormErrorMessage>{errors.answer && errors.answer.message}</FormErrorMessage>
         </FormControl>
-        <Button mt={4} colorScheme="linkedin" isLoading={isSubmitting} type="submit">
-          登録する
-        </Button>
+        <Grid gap={4} mt={6}>
+          <Button colorScheme="linkedin" isLoading={isSubmitting} type="submit">
+            更新する
+          </Button>
+          <Button colorScheme="red" type="button" onClick={handleRemove}>
+            削除する
+          </Button>
+        </Grid>
       </VStack>
     </form>
   );

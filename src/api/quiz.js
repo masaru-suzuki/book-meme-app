@@ -37,6 +37,6 @@ export const updateQuizDB = (quiz) => {
 /**
  * firebaseからクイズを削除する
  */
-export const removeQuizDB = (quiz) => {
-  deleteDoc(quizRef(quiz.id));
+export const removeQuizDB = (id) => {
+  deleteDoc(quizRef(id));
 };
