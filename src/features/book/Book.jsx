@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import FixedButton from './FixedButton';
 import MemoList from './MemoList';
 import { ButtonBack } from '../../components/ButtonBack';
@@ -9,6 +9,7 @@ import FormEdit from './FormEdit';
 import MemoAdd from './MemoAdd';
 import MemoEdit from './MemoEdit';
 import { remove } from '../../store/modules/bookSlice';
+import AlertModal from './AlertModal';
 
 // const Book = ({ book, backToBookRoot }) => {
 const Book = ({ bookId, backToBookRoot }) => {
@@ -48,6 +49,17 @@ const Book = ({ bookId, backToBookRoot }) => {
     setEditingMemo(memo);
   };
 
+  /**
+   * 本の削除をする際のアラートモーダル
+   */
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const handleRemove = () => {
+    dispatch(remove(bookId));
+    backToBookRoot();
+    onClose();
+  };
+
   return (
     <>
       {bookFlag === '' && (
@@ -62,8 +74,9 @@ const Book = ({ bookId, backToBookRoot }) => {
             <MemoList bookId={book.id} changeMemoEditMode={changeMemoEditMode} />
           </Box>
           {/* TODO: add modal confirm action */}
+          <AlertModal isOpen={isOpen} onClose={onClose} handleRemove={handleRemove} />
           <Box mt={6}>
-            <Button onClick={removeBook} colorScheme="red" w={'100%'}>
+            <Button onClick={onOpen} colorScheme="red" w={'100%'}>
               本を削除
             </Button>
           </Box>
