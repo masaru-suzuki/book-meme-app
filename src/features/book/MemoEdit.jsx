@@ -11,10 +11,13 @@ import {
   Button,
   Textarea,
   Grid,
+  useToast,
+  Box,
 } from '@chakra-ui/react';
 
 const MemoEdit = ({ editingMemo, backToBookDetail }) => {
   const dispatch = useDispatch();
+  const toast = useToast();
   const { id, bookId, bookTitle, quiz, stage, answer } = editingMemo;
 
   const {
@@ -39,6 +42,12 @@ const MemoEdit = ({ editingMemo, backToBookDetail }) => {
 
   const handleRemove = () => {
     dispatch(remove(id));
+    toast({
+      title: 'メモを削除しました',
+      duration: 1000,
+      status: 'success',
+      isClosable: true,
+    });
     backToBookDetail();
   };
 
