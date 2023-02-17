@@ -21,7 +21,7 @@ const BookRoot = ({ bookList, backToTop }) => {
       {bookRootFlag === '' && (
         <>
           <ButtonBack label="TOP" cb={backToTop} />
-          <VStack divider={<StackDivider borderColor="gray.200" />} spacing={4} align="stretch">
+          <VStack divider={<StackDivider borderColor="gray.200" />} mt={-4} spacing={4} align="stretch">
             <StackDivider borderColor="gray.200" />
             {/* TODO: フリックで削除できるようにする */}
             {bookList.map((book) => {

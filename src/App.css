@@ -14,8 +14,10 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   font-weight: bold;
+  z-index: 999;
 }
 
 .App-contents {
-  padding: 16px 24px;
+  position: relative;
+  padding: 48px 24px 16px;
 }

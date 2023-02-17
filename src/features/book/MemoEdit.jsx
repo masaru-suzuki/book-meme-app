@@ -44,7 +44,7 @@ const MemoEdit = ({ editingMemo, backToBookDetail }) => {
     dispatch(remove(id));
     toast({
       title: 'メモを削除しました',
-      duration: 1000,
+      duration: 2000,
       status: 'success',
       isClosable: true,
     });

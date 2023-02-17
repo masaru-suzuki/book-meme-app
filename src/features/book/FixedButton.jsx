@@ -5,7 +5,7 @@ const CustomListIcon = () => <Icon as={BiListPlus} width="24px" height="24px" op
 
 const FixedButton = ({ setBookFlag }) => {
   return (
-    <Stack position="fixed" bottom="5" right="5" direction="column" spacing={2} align="center">
+    <Stack position="fixed" bottom="5" right="5" direction="column" spacing={2} align="center" zIndex={100}>
       <IconButton
         borderRadius="100%"
         w={14}
