@@ -24,9 +24,17 @@ const bookSlice = createSlice({
      */
     update(state, { payload }) {
       updateBookDB(payload);
-      const bookList = [...state.bookList];
-      const newBookList = bookList.map((book) => (book.id === payload.id ? payload : book));
-      state.bookList = newBookList;
+
+      // like as immutable update
+      // const newState = { ...state };
+      // newState.bookList = newState.bookList.map((book) => (book.id === payload.id ? payload : book));
+      // return newState;
+
+      // like as mutable update
+      state.bookList = state.bookList.map((book) => (book.id === payload.id ? payload : book));
+
+      // NG
+      // return state.bookList.map((book) => (book.id === payload.id ? payload : book));
     },
     /**
      * @param {string} payload 削除する本のid
