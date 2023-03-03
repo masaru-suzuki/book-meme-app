@@ -11,13 +11,15 @@ import MemoEdit from './MemoEdit';
 import { remove } from '../../store/modules/bookSlice';
 import AlertModal from './AlertModal';
 
-const Book = ({ bookId, backToBookRoot }) => {
+const BookNG = ({ book, backToBookRoot }) => {
   const dispatch = useDispatch();
 
-  const { bookList } = useSelector((state) => state.book);
   const [editingMemo, setEditingMemo] = useState({});
 
-  const book = bookList.find((book) => book.id === bookId);
+  // 編集後に更新されたstateが渡ってくると期待していた
+  // Firebaseでは更新されているが、DOMに反映されない
+  // 本の追加・削除は可能（stateが更新を検知してくれる）
+  console.log(book);
 
   // "" || "bookEdit" || "memoAdd" || "memoEdit"
   const [bookFlag, setBookFlag] = useState('');
@@ -42,7 +44,7 @@ const Book = ({ bookId, backToBookRoot }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleRemove = () => {
-    dispatch(remove(bookId));
+    dispatch(remove(book.id));
     backToBookRoot();
     onClose();
   };
@@ -90,4 +92,4 @@ const Book = ({ bookId, backToBookRoot }) => {
   );
 };
 
-export default Book;
+export default BookNG;

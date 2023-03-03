@@ -4,6 +4,7 @@ import { VStack, Flex, Heading, IconButton, StackDivider, Button } from '@chakra
 import { EditIcon } from '@chakra-ui/icons';
 import FormAdd from './FormAdd';
 import Book from './Book';
+import BookNG from './BookNG';
 
 const BookRoot = ({ bookList, backToTop }) => {
   const [bookRootFlag, setBookRootFlag] = useState(''); // "" || "add" || "edit" || "detail"
@@ -53,8 +54,8 @@ const BookRoot = ({ bookList, backToTop }) => {
       {bookRootFlag === 'detail' && (
         <>
           {/* TODO: どうして値が更新されないのか？ */}
-          {/* <Book book={editingBook} backToBookRoot={backToBookRoot} /> */}
-          <Book bookId={editingBook.id} backToBookRoot={backToBookRoot} />
+          <BookNG book={editingBook} backToBookRoot={backToBookRoot} />
+          {/* <Book bookId={editingBook.id} backToBookRoot={backToBookRoot} /> */}
         </>
       )}
     </>
