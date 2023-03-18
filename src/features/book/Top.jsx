@@ -54,8 +54,8 @@ const BookRoot = ({ bookList, backToTop }) => {
       {bookRootFlag === 'detail' && (
         <>
           {/* TODO: どうして値が更新されないのか？ */}
-          <BookNG book={editingBook} backToBookRoot={backToBookRoot} />
-          {/* <Book bookId={editingBook.id} backToBookRoot={backToBookRoot} /> */}
+          {/* <BookNG book={editingBook} backToBookRoot={backToBookRoot} /> */}
+          <Book bookId={editingBook.id} backToBookRoot={backToBookRoot} />
         </>
       )}
     </>
