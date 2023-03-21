@@ -1,5 +1,9 @@
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { ButtonBack } from '../../components/ButtonBack';
+import { CircularProgress, CircularProgressLabel } from '@chakra-ui/react';
+import Quiz from './Quiz';
+import AnswerButtons from './AnswerButtons';
 
 const ReviewRoot = ({ backToTop }) => {
   const { status, quizList } = useSelector((state) => state.quiz);
@@ -21,12 +25,36 @@ const ReviewRoot = ({ backToTop }) => {
   // 今日より前に復習日だった問題を格納
   const reviewQuizList = quizList.filter((quiz) => isBeforeToday(quiz.reviewDate));
 
-  // 今日より前の日付のクイズを集計
+  // クイズリストから、回答済みのクイズ
+  const answeredQuizList = reviewQuizList.filter((quiz) => !quiz.isAnswered);
+  const [quizIndex, setQuizIndex] = useState(reviewQuizList.length - answeredQuizList.length);
+  const [showQuizIndex, setShowQuizIndex] = useState(quizIndex);
+
+  const [activeQuiz, setActiveQuiz] = useState(quizList[quizIndex]);
+
+  // 次のクイズ
+  const changeNextQuiz = () => {
+    setShowQuizIndex((prev) => prev + 1);
+  };
+
+  // 前のクイズ
+  const changePrevQuiz = () => {
+    if (showQuizIndex < 0) return;
+    setShowQuizIndex((prev) => prev - 1);
+  };
+
   return (
     <>
       <ButtonBack label="TOP" cb={backToTop} />
-      <h2>Review Page</h2>
-      {quizList.filter((quiz) => {})}
+
+      <Quiz activeQuiz={activeQuiz} />
+      <AnswerButtons
+        quizIndex={quizIndex}
+        showQuizIndex={showQuizIndex}
+        totalReviewQuiz={reviewQuizList.length}
+        changePrevQuiz={changePrevQuiz}
+        changeNextQuiz={changeNextQuiz}
+      />
     </>
   );
 };

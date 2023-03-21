@@ -35,7 +35,7 @@ const MemoAdd = ({ book }) => {
     // let last_interval = 1;
     // // 直近の回答の正誤: 前回の回答が正解だったかどうかを表す真偽値です。
     // let last_answer_correct = null;
-    const today = new Date();
+    const today = new Date('2023-03-01');
 
     const newQuiz = {
       id: id,
@@ -45,6 +45,7 @@ const MemoAdd = ({ book }) => {
       answer: values.answer,
       stage: 0,
       reviewDate: today.getTime(), // reduxでエラーが出ないように、Unixエポックからの経過時間（ミリ秒）に変換する。
+      isAnswered: false,
       //   easiness_factor: initial_easiness_factor,
       //   number_of_reviews: initial_number_of_reviews,
       //   last_review_interval: last_interval,
