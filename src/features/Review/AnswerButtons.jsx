@@ -2,12 +2,22 @@ import { ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 import { Button, Grid, CircularProgress, CircularProgressLabel } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 
-const AnswerButtons = ({ quizIndex, showQuizIndex, totalReviewQuiz, changePrevQuiz, changeNextQuiz }) => {
+const AnswerButtons = ({
+  answeredQuizIndex,
+  quizIndex,
+  showQuizIndex,
+  totalReviewQuiz,
+  changePrevQuiz,
+  changeNextQuiz,
+}) => {
   const [progressColor, setProgressColor] = useState('red.400');
   const [trackColor, setTrackColor] = useState('red.100');
 
+  // 表示するクイズのインデックス
+  const index = quizIndex + 1 > totalReviewQuiz ? totalReviewQuiz : quizIndex + 1;
+
   // クイズの進捗
-  const progress = (quizIndex / totalReviewQuiz) * 100;
+  const progress = (answeredQuizIndex / totalReviewQuiz) * 100;
 
   // プログレスバーの色
   useEffect(() => {
@@ -24,11 +34,11 @@ const AnswerButtons = ({ quizIndex, showQuizIndex, totalReviewQuiz, changePrevQu
       setProgressColor('red.400');
       setTrackColor('red.100');
     }
-  }, [quizIndex]);
+  }, [answeredQuizIndex]);
 
   return (
     <Grid gridTemplateColumns="repeat(3, 1fr)" mt={10} spacing={8} justifyContent="space-between">
-      {showQuizIndex > 0 && (
+      {quizIndex > 0 && (
         <Button
           gridColumn="1 / 2"
           leftIcon={<ChevronLeftIcon />}
@@ -48,9 +58,9 @@ const AnswerButtons = ({ quizIndex, showQuizIndex, totalReviewQuiz, changePrevQu
         thickness="10px"
         size="40px"
       >
-        <CircularProgressLabel>{`${showQuizIndex}/${totalReviewQuiz}`}</CircularProgressLabel>
+        <CircularProgressLabel>{`${index}/${totalReviewQuiz}`}</CircularProgressLabel>
       </CircularProgress>
-      {showQuizIndex < totalReviewQuiz && (
+      {index < totalReviewQuiz && (
         <Button
           gridColumn="3 / 4"
           rightIcon={<ChevronRightIcon />}

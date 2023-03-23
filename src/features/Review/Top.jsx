@@ -27,53 +27,53 @@ const ReviewRoot = ({ backToTop }) => {
   // 今日より前に復習日だった問題を格納=今日回答するべきクイズ
   const reviewQuizList = quizList.filter((quiz) => isBeforeToday(quiz.reviewDate));
 
+  // 今日復習するクイズの個数
+  const totalReviewQuiz = reviewQuizList.length;
+
   // クイズリストから、回答済みのクイズ
   const answeredQuizList = reviewQuizList.filter((quiz) => quiz.isAnswered);
 
   // 回答済みクイズの個数
   // state更新したら、自動で更新される？
   // そうしたら、answeredQuizをuseStateで管理する必要なくなる？
-  const [answeredQuiz, setAnsweredQuiz] = useState(answeredQuizList.length);
+  const answeredQuizIndex = answeredQuizList.length;
 
-  // 表示しているクイズのindex
+  // 実際のクイズのindex
   // 未回答の回答の最初のクイズにする
   // state更新したら、自動で更新される？
   // そうしたら、answeredQuizをuseStateで管理する必要なくなる？
-  const [showQuizIndex, setShowQuizIndex] = useState(answeredQuiz);
+  const [quizIndex, setQuizIndex] = useState(answeredQuizIndex - 1 < 0 ? 0 : answeredQuizIndex - 1);
+
+  // 表示しているクイズのインデックス
+  const [showQuizIndex, setShowQuizIndex] = useState(answeredQuizIndex > totalReviewQuiz && totalReviewQuiz);
 
   // 表示しているクイズ
-  const [activeQuiz, setActiveQuiz] = useState(reviewQuizList[showQuizIndex]);
+  const activeQuiz = reviewQuizList[quizIndex] || reviewQuizList[quizIndex - 1];
 
-  // console.log(answeredQuizList);
-  // console.log({ answeredQuiz });
-  // console.log({ showQuizIndex });
-  // console.log(activeQuiz);
+  console.log(answeredQuizList);
+  console.log({ totalReviewQuiz });
+  console.log({ answeredQuizIndex });
+  console.log({ quizIndex });
+  console.log({ showQuizIndex });
+  console.log(activeQuiz);
 
   const answerCorrect = () => {
-    // update();
     // 表示しているクイズが回答済
     // --未回答のクイズあり
     // ----未回答のクイズのインデックスに遷移
     // ----回答済みクイズの個数はそのまま
     // --未回答のクイズなし
-    // ----showQuizIndex,answeredQuizそのまま
+    // ----QuizIndex,answeredQuizそのまま
     // ----回答済みクイズの個数はそのまま
 
     // 表示しているクイズが未回答
     // --未回答のクイズあり
     // ----未回答のクイズのインデックスに遷移
     // --未回答のクイズなし
-    // ----showQuizIndex,answeredQuizそのまま
+    // ----QuizIndex,answeredQuizそのまま
     // --未回答のクイズのインデックスに遷移
     // --回答済みクイズの個数を+1
 
-    // if (answeredQuiz < reviewQuizList.length) {
-    //   if (showQuizIndex < reviewQuizList.length) {
-    //     changeNextQuiz();
-    //     setAnsweredQuiz((prev) => prev + 1);
-    //   } else {
-    //   }
-    // }
     const updatedQuiz = { ...activeQuiz };
     // isAnsweredをtrueに更新
     updatedQuiz.isAnswered = true;
@@ -82,28 +82,33 @@ const ReviewRoot = ({ backToTop }) => {
   };
 
   const resetIsAnswered = () => {
-    console.log('reset');
+    reviewQuizList.map((quiz) => {
+      const resetQuiz = { ...quiz };
+      resetQuiz.isAnswered = false;
+      console.log(resetQuiz);
+      dispatch(update(resetQuiz));
+    });
   };
 
   const answerIncorrect = () => {
-    if (answeredQuiz < reviewQuizList.length) {
+    if (answeredQuizIndex < totalReviewQuiz) {
       changeNextQuiz();
-      setAnsweredQuiz((prev) => prev + 1);
+      setShowQuizIndex((prev) => prev + 1);
     }
   };
 
   // 次のクイズ
   const changeNextQuiz = () => {
-    if (showQuizIndex > reviewQuizList.length) return;
+    if (quizIndex > totalReviewQuiz - 1) return;
+    setQuizIndex((prev) => prev + 1);
     setShowQuizIndex((prev) => prev + 1);
-    setActiveQuiz(reviewQuizList[showQuizIndex]);
   };
 
   // 前のクイズ
   const changePrevQuiz = () => {
-    if (showQuizIndex < 0) return;
+    if (quizIndex < 1) return;
+    setQuizIndex((prev) => prev - 1);
     setShowQuizIndex((prev) => prev - 1);
-    setActiveQuiz(reviewQuizList[showQuizIndex - 1]);
   };
 
   console.log(reviewQuizList);
@@ -114,9 +119,10 @@ const ReviewRoot = ({ backToTop }) => {
 
       <Quiz activeQuiz={activeQuiz} answerCorrect={answerCorrect} answerIncorrect={answerIncorrect} />
       <AnswerButtons
-        quizIndex={answeredQuiz}
+        answeredQuizIndex={answeredQuizIndex}
+        quizIndex={quizIndex}
         showQuizIndex={showQuizIndex}
-        totalReviewQuiz={reviewQuizList.length}
+        totalReviewQuiz={totalReviewQuiz}
         changePrevQuiz={changePrevQuiz}
         changeNextQuiz={changeNextQuiz}
       />
