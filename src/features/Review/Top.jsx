@@ -36,26 +36,36 @@ const ReviewRoot = ({ backToTop }) => {
   // 回答済みクイズの個数
   // state更新したら、自動で更新される？
   // そうしたら、answeredQuizをuseStateで管理する必要なくなる？
-  const answeredQuizIndex = answeredQuizList.length;
+  const totalAnsweredQuiz = answeredQuizList.length;
 
   // 実際のクイズのindex
   // 未回答の回答の最初のクイズにする
   // state更新したら、自動で更新される？
   // そうしたら、answeredQuizをuseStateで管理する必要なくなる？
-  const [quizIndex, setQuizIndex] = useState(answeredQuizIndex - 1 < 0 ? 0 : answeredQuizIndex - 1);
+  const [quizIndex, setQuizIndex] = useState(totalAnsweredQuiz - 1 < 0 ? 0 : totalAnsweredQuiz - 1);
+
+  useEffect(() => {}, [quizIndex]);
+
+  // 未回答のクイズのインデックス
+  const unAnsweredQuizIndex = reviewQuizList.findIndex((quiz) => !quiz.isAnswered);
 
   // 表示しているクイズのインデックス
-  const [showQuizIndex, setShowQuizIndex] = useState(answeredQuizIndex > totalReviewQuiz && totalReviewQuiz);
+  // const [showQuizIndex, setShowQuizIndex] = useState(totalAnsweredQuiz > totalReviewQuiz && totalReviewQuiz);
+  const [showQuizIndex, setShowQuizIndex] = useState(
+    totalAnsweredQuiz >= totalReviewQuiz ? totalReviewQuiz - 1 : totalAnsweredQuiz
+  );
 
   // 表示しているクイズ
   const activeQuiz = reviewQuizList[quizIndex] || reviewQuizList[quizIndex - 1];
+  // const activeQuiz = reviewQuizList[quizIndex] || reviewQuizList[0];
 
   console.log(answeredQuizList);
   console.log({ totalReviewQuiz });
-  console.log({ answeredQuizIndex });
+  console.log({ totalAnsweredQuiz });
+  console.log({ unAnsweredQuizIndex });
   console.log({ quizIndex });
   console.log({ showQuizIndex });
-  console.log(activeQuiz);
+  console.log({ activeQuiz });
 
   const answerCorrect = () => {
     // 表示しているクイズが回答済
@@ -91,7 +101,7 @@ const ReviewRoot = ({ backToTop }) => {
   };
 
   const answerIncorrect = () => {
-    if (answeredQuizIndex < totalReviewQuiz) {
+    if (totalAnsweredQuiz < totalReviewQuiz) {
       changeNextQuiz();
       setShowQuizIndex((prev) => prev + 1);
     }
@@ -119,7 +129,7 @@ const ReviewRoot = ({ backToTop }) => {
 
       <Quiz activeQuiz={activeQuiz} answerCorrect={answerCorrect} answerIncorrect={answerIncorrect} />
       <AnswerButtons
-        answeredQuizIndex={answeredQuizIndex}
+        totalAnsweredQuiz={totalAnsweredQuiz}
         quizIndex={quizIndex}
         showQuizIndex={showQuizIndex}
         totalReviewQuiz={totalReviewQuiz}

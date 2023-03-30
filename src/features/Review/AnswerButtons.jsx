@@ -3,7 +3,7 @@ import { Button, Grid, CircularProgress, CircularProgressLabel } from '@chakra-u
 import React, { useEffect, useState } from 'react';
 
 const AnswerButtons = ({
-  answeredQuizIndex,
+  totalAnsweredQuiz,
   quizIndex,
   showQuizIndex,
   totalReviewQuiz,
@@ -17,7 +17,7 @@ const AnswerButtons = ({
   const index = quizIndex + 1 > totalReviewQuiz ? totalReviewQuiz : quizIndex + 1;
 
   // クイズの進捗
-  const progress = (answeredQuizIndex / totalReviewQuiz) * 100;
+  const progress = (totalAnsweredQuiz / totalReviewQuiz) * 100;
 
   // プログレスバーの色
   useEffect(() => {
@@ -34,7 +34,7 @@ const AnswerButtons = ({
       setProgressColor('red.400');
       setTrackColor('red.100');
     }
-  }, [answeredQuizIndex]);
+  }, [totalAnsweredQuiz]);
 
   return (
     <Grid gridTemplateColumns="repeat(3, 1fr)" mt={10} spacing={8} justifyContent="space-between">
