@@ -44,8 +44,6 @@ const ReviewRoot = ({ backToTop }) => {
   // そうしたら、answeredQuizをuseStateで管理する必要なくなる？
   const [quizIndex, setQuizIndex] = useState(totalAnsweredQuiz - 1 < 0 ? 0 : totalAnsweredQuiz - 1);
 
-  useEffect(() => {}, [quizIndex]);
-
   // 未回答のクイズのインデックス
   const unAnsweredQuizIndex = reviewQuizList.findIndex((quiz) => !quiz.isAnswered);
 
@@ -69,20 +67,24 @@ const ReviewRoot = ({ backToTop }) => {
 
   const answerCorrect = () => {
     // 表示しているクイズが回答済
-    // --未回答のクイズあり
-    // ----未回答のクイズのインデックスに遷移
-    // ----回答済みクイズの個数はそのまま
-    // --未回答のクイズなし
-    // ----QuizIndex,answeredQuizそのまま
-    // ----回答済みクイズの個数はそのまま
-
-    // 表示しているクイズが未回答
-    // --未回答のクイズあり
-    // ----未回答のクイズのインデックスに遷移
-    // --未回答のクイズなし
-    // ----QuizIndex,answeredQuizそのまま
-    // --未回答のクイズのインデックスに遷移
-    // --回答済みクイズの個数を+1
+    if (activeQuiz.isAnswered) {
+      console.log('回答済み');
+      // --未回答のクイズあり
+      // ----未回答のクイズのインデックスに遷移
+      // ----回答済みクイズの個数はそのまま
+      // --未回答のクイズなし
+      // ----QuizIndex,answeredQuizそのまま
+      // ----回答済みクイズの個数はそのまま
+      // 表示しているクイズが未回答
+    } else {
+      console.log('未回答');
+      // --未回答のクイズあり
+      // ----未回答のクイズのインデックスに遷移
+      // --未回答のクイズなし
+      // ----QuizIndex,answeredQuizそのまま
+      // --未回答のクイズのインデックスに遷移
+      // --回答済みクイズの個数を+1
+    }
 
     const updatedQuiz = { ...activeQuiz };
     // isAnsweredをtrueに更新
