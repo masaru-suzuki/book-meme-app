@@ -8,6 +8,7 @@ import { update } from '../../store/modules/quizSlice';
 
 const ReviewRoot = ({ backToTop }) => {
   const dispatch = useDispatch();
+  // stateはなるべく少なくする=>管理する対象が多くなると処理が複雑になる
   const { status, quizList } = useSelector((state) => state.quiz);
 
   // 今日の日付も含めて、今日よりも前か判定する関数
@@ -52,21 +53,24 @@ const ReviewRoot = ({ backToTop }) => {
   // 実際のクイズのindex
   const [quizIndex, setQuizIndex] = useState(getQuizIndex());
 
+  // 表示しているクイズのインデックスを返す関数
+  const getShowQuizIndex = () => (totalAnsweredQuiz >= totalReviewQuiz ? totalReviewQuiz - 1 : totalAnsweredQuiz);
+
   // 表示しているクイズのインデックス
   // クイズのインデックスは０スタートだが、表示は１スタート
-  const [showQuizIndex, setShowQuizIndex] = useState(
-    totalAnsweredQuiz >= totalReviewQuiz ? totalReviewQuiz - 1 : totalAnsweredQuiz
-  );
+  // TODO：useStateの中身を外に出す
+  const [showQuizIndex, setShowQuizIndex] = useState(getShowQuizIndex());
 
   // 表示しているクイズ
   const activeQuiz = reviewQuizList[quizIndex] || reviewQuizList[quizIndex - 1];
 
   // TODO: 佐川さんに確認このやり方であってる？
   // 表示しているクイズのインデックスを更新
-  useEffect(() => {
-    console.log('useEffect');
-    setQuizIndex(getQuizIndex());
-  }, [quizList]);
+  // stateを軸に処理を分けるので、useEffectは不要
+  // useEffect(() => {
+  //   console.log('useEffect');
+  //   setQuizIndex(getQuizIndex());
+  // }, [quizList]);
 
   console.log({ hasUnAnsweredQuiz });
   console.log(answeredQuizList);
@@ -154,6 +158,9 @@ const ReviewRoot = ({ backToTop }) => {
     <>
       <ButtonBack label="TOP" cb={backToTop} />
       <Button onClick={resetIsAnswered}>reset</Button>
+
+      {/* stateを軸に処理を分ける例 */}
+      {!hasUnAnsweredQuiz && <p>全て回答しました</p>}
 
       <Quiz activeQuiz={activeQuiz} answerCorrect={answerCorrect} answerIncorrect={answerIncorrect} />
       <AnswerButtons
