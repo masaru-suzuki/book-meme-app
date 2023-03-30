@@ -38,27 +38,26 @@ const ReviewRoot = ({ backToTop }) => {
   // そうしたら、answeredQuizをuseStateで管理する必要なくなる？
   const totalAnsweredQuiz = answeredQuizList.length;
 
+  // 未回答のクイズのインデックス
+  // 全て回答していたら、最後の問題
+  const unAnsweredQuizIndex =
+    reviewQuizList.findIndex((quiz) => !quiz.isAnswered) > -1
+      ? reviewQuizList.findIndex((quiz) => !quiz.isAnswered)
+      : totalReviewQuiz;
+
   // 実際のクイズのindex
   // 未回答の回答の最初のクイズにする
-  // state更新したら、自動で更新される？
-  // そうしたら、answeredQuizをuseStateで管理する必要なくなる？
-  const [quizIndex, setQuizIndex] = useState(totalAnsweredQuiz - 1 < 0 ? 0 : totalAnsweredQuiz - 1);
-
-  // 未回答のクイズのインデックス
-  const unAnsweredQuizIndex = reviewQuizList.findIndex((quiz) => !quiz.isAnswered);
+  const [quizIndex, setQuizIndex] = useState(unAnsweredQuizIndex);
 
   // 表示しているクイズのインデックス
-  // const [showQuizIndex, setShowQuizIndex] = useState(totalAnsweredQuiz > totalReviewQuiz && totalReviewQuiz);
   const [showQuizIndex, setShowQuizIndex] = useState(
     totalAnsweredQuiz >= totalReviewQuiz ? totalReviewQuiz - 1 : totalAnsweredQuiz
   );
 
   // 表示しているクイズ
   const activeQuiz = reviewQuizList[quizIndex] || reviewQuizList[quizIndex - 1];
-  // const activeQuiz = reviewQuizList[quizIndex] || reviewQuizList[0];
 
   console.log(answeredQuizList);
-  console.log({ totalReviewQuiz });
   console.log({ totalAnsweredQuiz });
   console.log({ unAnsweredQuizIndex });
   console.log({ quizIndex });
