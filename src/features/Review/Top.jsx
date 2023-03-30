@@ -92,6 +92,7 @@ const ReviewRoot = ({ backToTop }) => {
       } else {
         console.log('未回答なし');
         // --未回答のクイズなし
+        // FIXME: クリック時にhasUnAnsweredQuizがfalseに
         // ----QuizIndex,answeredQuizそのまま
         // ----回答済みクイズの個数を+1
       }
@@ -113,6 +114,7 @@ const ReviewRoot = ({ backToTop }) => {
     });
   };
 
+  // TODO: answerCorrectと処理がかぶると思うので、まとめる
   const answerIncorrect = () => {
     if (totalAnsweredQuiz < totalReviewQuiz) {
       changeNextQuiz();
@@ -134,7 +136,6 @@ const ReviewRoot = ({ backToTop }) => {
     setShowQuizIndex((prev) => prev - 1);
   };
 
-  console.log(reviewQuizList);
   return (
     <>
       <ButtonBack label="TOP" cb={backToTop} />
