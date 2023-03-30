@@ -7,8 +7,8 @@ const AnswerButtons = ({
   quizIndex,
   showQuizIndex,
   totalReviewQuiz,
-  changePrevQuiz,
-  changeNextQuiz,
+  showPrevQuiz,
+  showNextQuiz,
 }) => {
   const [progressColor, setProgressColor] = useState('red.400');
   const [trackColor, setTrackColor] = useState('red.100');
@@ -44,7 +44,7 @@ const AnswerButtons = ({
           leftIcon={<ChevronLeftIcon />}
           colorScheme="teal"
           variant="outline"
-          onClick={changePrevQuiz}
+          onClick={showPrevQuiz}
         >
           前へ
         </Button>
@@ -66,7 +66,7 @@ const AnswerButtons = ({
           rightIcon={<ChevronRightIcon />}
           colorScheme="teal"
           variant="outline"
-          onClick={changeNextQuiz}
+          onClick={showNextQuiz}
         >
           次へ
         </Button>

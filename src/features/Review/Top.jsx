@@ -135,20 +135,20 @@ const ReviewRoot = ({ backToTop }) => {
   // TODO: answerCorrectと処理がかぶると思うので、まとめる
   const answerIncorrect = () => {
     if (totalAnsweredQuiz < totalReviewQuiz) {
-      changeNextQuiz();
+      showNextQuiz();
       setShowQuizIndex((prev) => prev + 1);
     }
   };
 
-  // 次のクイズ
-  const changeNextQuiz = () => {
+  // 次のクイズを表示
+  const showNextQuiz = () => {
     if (quizIndex > totalReviewQuiz - 1) return;
     setQuizIndex((prev) => prev + 1);
     setShowQuizIndex((prev) => prev + 1);
   };
 
-  // 前のクイズ
-  const changePrevQuiz = () => {
+  // 前のクイズを表示
+  const showPrevQuiz = () => {
     if (quizIndex < 1) return;
     setQuizIndex((prev) => prev - 1);
     setShowQuizIndex((prev) => prev - 1);
@@ -168,8 +168,8 @@ const ReviewRoot = ({ backToTop }) => {
         quizIndex={quizIndex}
         showQuizIndex={showQuizIndex}
         totalReviewQuiz={totalReviewQuiz}
-        changePrevQuiz={changePrevQuiz}
-        changeNextQuiz={changeNextQuiz}
+        showPrevQuiz={showPrevQuiz}
+        showNextQuiz={showNextQuiz}
       />
     </>
   );
