@@ -44,12 +44,17 @@ const ReviewRoot = ({ backToTop }) => {
   // 未回答のクイズがあるか
   const hasUnAnsweredQuiz = unAnsweredQuizIndex > -1;
 
-  // 実際のクイズのindex
+  // 未回答のクイズの配列のインデックスを返す関数
   // 未回答の回答の最初のクイズにする
-  // 全て回答していたら、最後の問題
-  const [quizIndex, setQuizIndex] = useState(unAnsweredQuizIndex > -1 ? unAnsweredQuizIndex : totalReviewQuiz);
+  // 全て回答していたら、最後の問題のインデックスを返す
+  const getQuizIndex = () => (hasUnAnsweredQuiz ? unAnsweredQuizIndex : totalReviewQuiz - 1);
+  console.log(getQuizIndex());
+
+  // 実際のクイズのindex
+  const [quizIndex, setQuizIndex] = useState(getQuizIndex());
 
   // 表示しているクイズのインデックス
+  // クイズのインデックスは０スタートだが、表示は１スタート
   const [showQuizIndex, setShowQuizIndex] = useState(
     totalAnsweredQuiz >= totalReviewQuiz ? totalReviewQuiz - 1 : totalAnsweredQuiz
   );
