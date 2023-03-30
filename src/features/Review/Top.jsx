@@ -48,7 +48,6 @@ const ReviewRoot = ({ backToTop }) => {
   // 未回答の回答の最初のクイズにする
   // 全て回答していたら、最後の問題のインデックスを返す
   const getQuizIndex = () => (hasUnAnsweredQuiz ? unAnsweredQuizIndex : totalReviewQuiz - 1);
-  console.log(getQuizIndex());
 
   // 実際のクイズのindex
   const [quizIndex, setQuizIndex] = useState(getQuizIndex());
@@ -61,6 +60,13 @@ const ReviewRoot = ({ backToTop }) => {
 
   // 表示しているクイズ
   const activeQuiz = reviewQuizList[quizIndex] || reviewQuizList[quizIndex - 1];
+
+  // TODO: 佐川さんに確認このやり方であってる？
+  // 表示しているクイズのインデックスを更新
+  useEffect(() => {
+    console.log('useEffect');
+    setQuizIndex(getQuizIndex());
+  }, [quizList]);
 
   console.log({ hasUnAnsweredQuiz });
   console.log(answeredQuizList);
@@ -78,6 +84,9 @@ const ReviewRoot = ({ backToTop }) => {
         console.log('未回答あり');
         // --未回答のクイズあり
         // ----未回答のクイズのインデックスに遷移
+        // FIXME: 「わかったボタン」をクリックしたときに、未回答のクイズに移動しない。
+        // だたし、getQuizIndex()を実行すると、正しい値が返ってくる。
+        setQuizIndex(getQuizIndex());
         // ----回答済みクイズの個数はそのまま
       } else {
         console.log('未回答なし');
