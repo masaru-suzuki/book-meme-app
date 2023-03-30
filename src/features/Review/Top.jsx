@@ -39,15 +39,15 @@ const ReviewRoot = ({ backToTop }) => {
   const totalAnsweredQuiz = answeredQuizList.length;
 
   // 未回答のクイズのインデックス
-  // 全て回答していたら、最後の問題
-  const unAnsweredQuizIndex =
-    reviewQuizList.findIndex((quiz) => !quiz.isAnswered) > -1
-      ? reviewQuizList.findIndex((quiz) => !quiz.isAnswered)
-      : totalReviewQuiz;
+  const unAnsweredQuizIndex = reviewQuizList.findIndex((quiz) => !quiz.isAnswered);
+
+  // 未回答のクイズがあるか
+  const hasUnAnsweredQuiz = unAnsweredQuizIndex > -1;
 
   // 実際のクイズのindex
   // 未回答の回答の最初のクイズにする
-  const [quizIndex, setQuizIndex] = useState(unAnsweredQuizIndex);
+  // 全て回答していたら、最後の問題
+  const [quizIndex, setQuizIndex] = useState(unAnsweredQuizIndex > -1 ? unAnsweredQuizIndex : totalReviewQuiz);
 
   // 表示しているクイズのインデックス
   const [showQuizIndex, setShowQuizIndex] = useState(
@@ -57,6 +57,7 @@ const ReviewRoot = ({ backToTop }) => {
   // 表示しているクイズ
   const activeQuiz = reviewQuizList[quizIndex] || reviewQuizList[quizIndex - 1];
 
+  console.log({ hasUnAnsweredQuiz });
   console.log(answeredQuizList);
   console.log({ totalAnsweredQuiz });
   console.log({ unAnsweredQuizIndex });
@@ -68,21 +69,32 @@ const ReviewRoot = ({ backToTop }) => {
     // 表示しているクイズが回答済
     if (activeQuiz.isAnswered) {
       console.log('回答済み');
-      // --未回答のクイズあり
-      // ----未回答のクイズのインデックスに遷移
-      // ----回答済みクイズの個数はそのまま
-      // --未回答のクイズなし
-      // ----QuizIndex,answeredQuizそのまま
-      // ----回答済みクイズの個数はそのまま
-      // 表示しているクイズが未回答
+      if (hasUnAnsweredQuiz) {
+        console.log('未回答あり');
+        // --未回答のクイズあり
+        // ----未回答のクイズのインデックスに遷移
+        // ----回答済みクイズの個数はそのまま
+      } else {
+        console.log('未回答なし');
+        // --未回答のクイズなし
+        // ----QuizIndex,answeredQuizそのまま
+        // ----回答済みクイズの個数はそのまま
+        // 表示しているクイズが未回答
+      }
     } else {
+      // 表示しているクイズが未回答
       console.log('未回答');
-      // --未回答のクイズあり
-      // ----未回答のクイズのインデックスに遷移
-      // --未回答のクイズなし
-      // ----QuizIndex,answeredQuizそのまま
-      // --未回答のクイズのインデックスに遷移
-      // --回答済みクイズの個数を+1
+      if (hasUnAnsweredQuiz) {
+        console.log('未回答あり');
+        // --未回答のクイズあり
+        // ----未回答のクイズのインデックスに遷移
+        // ----回答済みクイズの個数を+1
+      } else {
+        console.log('未回答なし');
+        // --未回答のクイズなし
+        // ----QuizIndex,answeredQuizそのまま
+        // ----回答済みクイズの個数を+1
+      }
     }
 
     const updatedQuiz = { ...activeQuiz };
