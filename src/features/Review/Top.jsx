@@ -57,7 +57,7 @@ const ReviewRoot = ({ backToTop }) => {
   const [answerFlag, setAnswerFlag] = useState(false);
 
   useEffect(() => {
-    setQuizIndex(getQuizIndex());
+    hasUnAnsweredQuiz && setQuizIndex(getQuizIndex());
   }, [answerFlag]);
 
   // 表示しているクイズのインデックスを返す関数
