@@ -11,6 +11,9 @@ const ReviewRoot = ({ backToTop }) => {
   // stateはなるべく少なくする=>管理する対象が多くなると処理が複雑になる
   const { status, quizList } = useSelector((state) => state.quiz);
 
+  //TODO: 1日の終わりに、クイズを更新したい。→毎日の0時に、クイズを更新するようにする
+  // それまでは今日の復習するクイズを表示できるようにする
+
   // 今日の日付も含めて、今日よりも前か判定する関数
   const isBeforeToday = (epochTime) => {
     const date = new Date(epochTime);
@@ -65,19 +68,10 @@ const ReviewRoot = ({ backToTop }) => {
 
   // 表示しているクイズのインデックス
   // クイズのインデックスは０スタートだが、表示は１スタート
-  // TODO：useStateの中身を外に出す
   const [showQuizIndex, setShowQuizIndex] = useState(getShowQuizIndex());
 
   // 表示しているクイズ
   const activeQuiz = reviewQuizList[quizIndex] || reviewQuizList[quizIndex - 1];
-
-  // TODO: 佐川さんに確認このやり方であってる？
-  // 表示しているクイズのインデックスを更新
-  // stateを軸に処理を分けるので、useEffectは不要
-  // useEffect(() => {
-  //   console.log('useEffect');
-  //   setQuizIndex(getQuizIndex());
-  // }, [quizList]);
 
   // console.log({ hasUnAnsweredQuiz });
   // console.log(answeredQuizList);
