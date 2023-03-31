@@ -106,6 +106,17 @@ const ReviewRoot = ({ backToTop }) => {
 
     console.log(updatedQuiz.stage);
 
+    // 復習日を取得する関数
+    const getReviewDate = (stage) => {
+      const today = new Date();
+      const daysToAdd = Math.pow(2, stage);
+      const newReviewDate = new Date(today.getTime() + daysToAdd * 24 * 60 * 60 * 1000);
+      return newReviewDate.getTime();
+    };
+
+    // 復習日を更新
+    updatedQuiz.reviewDate = getReviewDate(updatedQuiz.stage);
+
     // isAnsweredをtrueに更新
     updatedQuiz.isAnswered = true;
 
