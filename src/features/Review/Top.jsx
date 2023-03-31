@@ -79,54 +79,36 @@ const ReviewRoot = ({ backToTop }) => {
   //   setQuizIndex(getQuizIndex());
   // }, [quizList]);
 
-  console.log({ hasUnAnsweredQuiz });
-  console.log(answeredQuizList);
-  console.log({ totalAnsweredQuiz });
-  console.log({ unAnsweredQuizIndex });
-  console.log({ quizIndex });
-  console.log({ showQuizIndex });
-  console.log({ activeQuiz });
+  // console.log({ hasUnAnsweredQuiz });
+  // console.log(answeredQuizList);
+  // console.log({ totalAnsweredQuiz });
+  // console.log({ unAnsweredQuizIndex });
+  // console.log({ quizIndex });
+  // console.log({ showQuizIndex });
+  // console.log({ activeQuiz });
 
-  const answerCorrect = () => {
-    // 表示しているクイズが回答済
-    if (activeQuiz.isAnswered) {
-      console.log('回答済み');
-      if (hasUnAnsweredQuiz) {
-        console.log('未回答あり');
-        // --未回答のクイズあり
-        // ----未回答のクイズのインデックスに遷移
-        // FIXME: 「わかったボタン」をクリックしたときに、未回答のクイズに移動しない。
-        // だたし、getQuizIndex()を実行すると、正しい値が返ってくる。
-        // ----回答済みクイズの個数はそのまま
-      } else {
-        console.log('未回答なし');
-        // --未回答のクイズなし
-        // ----QuizIndex,answeredQuizそのまま
-        // ----回答済みクイズの個数はそのまま
-        // 表示しているクイズが未回答
-      }
-    } else {
-      // 表示しているクイズが未回答
-      console.log('未回答');
-      if (hasUnAnsweredQuiz) {
-        console.log('未回答あり');
-        // --未回答のクイズあり
-        // ----未回答のクイズのインデックスに遷移
-        // ----回答済みクイズの個数を+1
-      } else {
-        console.log('未回答なし');
-        // --未回答のクイズなし
-        // FIXME: クリック時にhasUnAnsweredQuizがfalseに
-        // ----QuizIndex,answeredQuizそのまま
-        // ----回答済みクイズの個数を+1
-      }
-    }
-
+  const answer = (isCorrect) => {
     setAnswerFlag((prev) => !prev);
 
     const updatedQuiz = { ...activeQuiz };
+
+    if (activeQuiz.isAnswered) {
+    } else {
+      // isCorrectによって処理を分ける
+      if (isCorrect) {
+        console.log('正解');
+        updatedQuiz.stage += 1;
+      } else {
+        console.log('不正解');
+        updatedQuiz.stage = updatedQuiz.stage - 1 < 0 ? 0 : updatedQuiz.stage - 1;
+      }
+    }
+
+    console.log(updatedQuiz.stage);
+
     // isAnsweredをtrueに更新
     updatedQuiz.isAnswered = true;
+
     // stage操作
     dispatch(update(updatedQuiz));
   };
@@ -138,14 +120,6 @@ const ReviewRoot = ({ backToTop }) => {
       console.log(resetQuiz);
       dispatch(update(resetQuiz));
     });
-  };
-
-  // TODO: answerCorrectと処理がかぶると思うので、まとめる
-  const answerIncorrect = () => {
-    if (totalAnsweredQuiz < totalReviewQuiz) {
-      showNextQuiz();
-      setShowQuizIndex((prev) => prev + 1);
-    }
   };
 
   // 次のクイズを表示
@@ -166,11 +140,7 @@ const ReviewRoot = ({ backToTop }) => {
     <>
       <ButtonBack label="TOP" cb={backToTop} />
       <Button onClick={resetIsAnswered}>reset</Button>
-
-      {/* stateを軸に処理を分ける例 */}
-      {!hasUnAnsweredQuiz && <p>全て回答しました</p>}
-
-      <Quiz activeQuiz={activeQuiz} answerCorrect={answerCorrect} answerIncorrect={answerIncorrect} />
+      <Quiz activeQuiz={activeQuiz} answer={answer} hasUnAnsweredQuiz={hasUnAnsweredQuiz} />
       <AnswerButtons
         totalAnsweredQuiz={totalAnsweredQuiz}
         quizIndex={quizIndex}
