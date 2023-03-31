@@ -53,6 +53,13 @@ const ReviewRoot = ({ backToTop }) => {
   // 実際のクイズのindex
   const [quizIndex, setQuizIndex] = useState(getQuizIndex());
 
+  // クイズに回答した時に、クイズのインデックスを更新する
+  const [answerFlag, setAnswerFlag] = useState(false);
+
+  useEffect(() => {
+    setQuizIndex(getQuizIndex());
+  }, [answerFlag]);
+
   // 表示しているクイズのインデックスを返す関数
   const getShowQuizIndex = () => (totalAnsweredQuiz >= totalReviewQuiz ? totalReviewQuiz - 1 : totalAnsweredQuiz);
 
@@ -90,7 +97,6 @@ const ReviewRoot = ({ backToTop }) => {
         // ----未回答のクイズのインデックスに遷移
         // FIXME: 「わかったボタン」をクリックしたときに、未回答のクイズに移動しない。
         // だたし、getQuizIndex()を実行すると、正しい値が返ってくる。
-        setQuizIndex(getQuizIndex());
         // ----回答済みクイズの個数はそのまま
       } else {
         console.log('未回答なし');
@@ -115,6 +121,8 @@ const ReviewRoot = ({ backToTop }) => {
         // ----回答済みクイズの個数を+1
       }
     }
+
+    setAnswerFlag((prev) => !prev);
 
     const updatedQuiz = { ...activeQuiz };
     // isAnsweredをtrueに更新
