@@ -149,17 +149,26 @@ const ReviewRoot = ({ backToTop }) => {
 
   return (
     <>
-      <ButtonBack label="TOP" cb={backToTop} />
-      <Button onClick={resetIsAnswered}>reset</Button>
-      <Quiz activeQuiz={activeQuiz} answer={answer} hasUnAnsweredQuiz={hasUnAnsweredQuiz} />
-      <AnswerButtons
-        totalAnsweredQuiz={totalAnsweredQuiz}
-        quizIndex={quizIndex}
-        showQuizIndex={showQuizIndex}
-        totalReviewQuiz={totalReviewQuiz}
-        showPrevQuiz={showPrevQuiz}
-        showNextQuiz={showNextQuiz}
-      />
+      {totalReviewQuiz ? (
+        <>
+          <ButtonBack label="TOP" cb={backToTop} />
+          <Button onClick={resetIsAnswered}>reset</Button>
+          <Quiz activeQuiz={activeQuiz} answer={answer} hasUnAnsweredQuiz={hasUnAnsweredQuiz} />
+          <AnswerButtons
+            totalAnsweredQuiz={totalAnsweredQuiz}
+            quizIndex={quizIndex}
+            showQuizIndex={showQuizIndex}
+            totalReviewQuiz={totalReviewQuiz}
+            showPrevQuiz={showPrevQuiz}
+            showNextQuiz={showNextQuiz}
+          />
+        </>
+      ) : (
+        <>
+          <ButtonBack label="TOP" cb={backToTop} />
+          <p>お疲れ様です！クイズはありません！</p>
+        </>
+      )}
     </>
   );
 };
