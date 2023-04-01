@@ -44,7 +44,7 @@ const quizSlice = createSlice({
       })
       .addCase(initQuizList.fulfilled, (state, { payload }) => {
         state.quizStatus = '取得済み';
-        state.bookList = payload;
+        state.quizList = payload;
       })
       .addCase(initQuizList.rejected, (state) => {
         state.quizStatus = 'データの取得に失敗しました。';
