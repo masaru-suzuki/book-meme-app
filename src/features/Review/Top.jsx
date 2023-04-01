@@ -13,15 +13,25 @@ const ReviewRoot = ({ backToTop }) => {
 
   //TODO: 1日の終わりに、クイズを更新したい。→毎日の0時に、クイズを更新するようにする
   // それまでは今日の復習するクイズを表示できるようにする
+  // localStorageに、最終更新日を保存して制御する？
+
+  // 検証用: エポックタイムからyyyy/dd/mmの文字列に変換する関数
+  const convertEpochTimeToDateString = (epochTime) => {
+    const dateObj = new Date(epochTime);
+    const year = dateObj.getFullYear();
+    const month = ('0' + (dateObj.getMonth() + 1)).slice(-2);
+    const date = ('0' + dateObj.getDate()).slice(-2);
+    return year + '/' + month + '/' + date;
+  };
 
   // 今日の日付も含めて、今日よりも前か判定する関数
   const isBeforeToday = (epochTime) => {
     const date = new Date(epochTime);
-
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-
     const time = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
+    // console.log(convertEpochTimeToDateString(time));
+
     const todayTime = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
 
     return time <= todayTime;
