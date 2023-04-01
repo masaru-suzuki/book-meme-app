@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import BookRoot from '../book/Top';
 import RandomRoot from '../Random/Top';
 import ReviewRoot from '../Review/Top';
 import { Grid, Stack, Button, IconButton, Icon } from '@chakra-ui/react';
 import { HiOutlineBookOpen } from 'react-icons/hi';
 import { useSelector } from 'react-redux';
+import { checkAndExecute, checkIfNewDay, updateLastExecutedDate } from '../../api/checkNewDay';
 
 const CustomBookIcon = () => <Icon as={HiOutlineBookOpen} width="24px" height="24px" opacity="0.8" />;
 
@@ -12,6 +13,17 @@ const Top = () => {
   const { status, bookList } = useSelector((state) => state.book);
   const [rootFlag, setRootFlag] = useState('');
   const backToTop = () => setRootFlag('');
+
+  // 1日1回だけ実行する関数を定義
+  const executeDailyFunction = () => {
+    // メインロジックをここに実装
+    console.log('今日の勉強アプリの処理が実行されました。');
+  };
+
+  // 1日1回だけ実行する関数を実行するロジック
+  useEffect(() => {
+    checkAndExecute(executeDailyFunction);
+  }, []);
 
   return (
     <>
