@@ -10,7 +10,8 @@ import { checkAndExecute, checkIfNewDay, updateLastExecutedDate } from '../../ap
 const CustomBookIcon = () => <Icon as={HiOutlineBookOpen} width="24px" height="24px" opacity="0.8" />;
 
 const Top = () => {
-  const { status, bookList } = useSelector((state) => state.book);
+  const { bookStatus, bookList } = useSelector((state) => state.book);
+  const { quizStatus, quizList } = useSelector((state) => state.quiz);
   const [rootFlag, setRootFlag] = useState('');
   const backToTop = () => setRootFlag('');
 

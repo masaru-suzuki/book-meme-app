@@ -4,7 +4,7 @@ import { addBookDB, fetchBookList, removeBookDB, updateBookDB } from '../../api/
 const initialState = {
   // TODO: loadingをflagで管理する
   bookList: [],
-  status: 'Loading...',
+  bookStatus: '...Loading',
 };
 
 const bookSlice = createSlice({
@@ -49,14 +49,14 @@ const bookSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(initBookList.pending, (state) => {
-        state.status = '...Loading(asyncThunk)';
+        state.bookStatus = '...Loading';
       })
       .addCase(initBookList.fulfilled, (state, { payload }) => {
-        state.status = '取得済み';
+        state.bookStatus = '取得済み';
         state.bookList = payload;
       })
       .addCase(initBookList.rejected, (state) => {
-        state.status = 'データの取得に失敗しました。';
+        state.bookStatus = 'データの取得に失敗しました。';
       });
   },
 });

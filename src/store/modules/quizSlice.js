@@ -3,7 +3,7 @@ import { addQuizDB, fetchQuizList, removeQuizDB, updateQuizDB } from '../../api/
 
 const initialState = {
   quizList: [],
-  status: 'Loading...',
+  quizStatus: '...Loading',
 };
 
 const quizSlice = createSlice({
@@ -39,23 +39,22 @@ const quizSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // TODO: initialStateのstatusが表示されており、pendingの方は表示されないのを確認
       .addCase(initQuizList.pending, (state) => {
-        state.status = 'Loading(asyncThunk)';
+        state.quizStatus = '...Loading';
       })
       .addCase(initQuizList.fulfilled, (state, { payload }) => {
-        state.status = '取得済み';
-        state.quizList = payload;
+        state.quizStatus = '取得済み';
+        state.bookList = payload;
       })
       .addCase(initQuizList.rejected, (state) => {
-        state.status = 'データの取得に失敗しました。';
+        state.quizStatus = 'データの取得に失敗しました。';
       });
   },
 });
 
 const { add, remove, update } = quizSlice.actions;
 
-const initQuizList = createAsyncThunk('quizSlice/asyncInit', async (payload) => await fetchQuizList());
+const initQuizList = createAsyncThunk('quizSlice/asyncInit', async () => await fetchQuizList());
 
 export { add, remove, update, initQuizList };
 
