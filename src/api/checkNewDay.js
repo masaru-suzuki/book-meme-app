@@ -10,10 +10,24 @@ const docRef = doc(db, DAILY_FUNCTION_COLLECTION, DAILY_FUNCTION_ID);
  * @returns {Promise<boolean>} 新しい日が始まっていればtrue, そうでなければfalse
  */
 export const checkIfNewDay = async () => {
+  const lastExecutedDate = await getLastExecutedDate();
+  const today = new Date().toDateString();
+
+  return new Promise((resolve, reject) => {
+    const isSameDay = !lastExecutedDate || lastExecutedDate !== today;
+    resolve(isSameDay);
+  });
+};
+
+/**
+ * Firestoreから最後に実行された日付を取得する
+ * @returns {Promise<string | null>} 最後に実行された日付
+ * Firestoreにデータが存在するが、lastExecutedDateが存在しない場合はnullを返す
+ */
+export const getLastExecutedDate = async () => {
   const docSnap = await getDoc(docRef);
   const lastExecutedDate = docSnap.exists ? docSnap.data().lastExecutedDate : null;
-  const today = new Date().toDateString();
-  return !lastExecutedDate || lastExecutedDate !== today;
+  return lastExecutedDate;
 };
 
 /**
