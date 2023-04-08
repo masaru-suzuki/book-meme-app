@@ -1,9 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { getLastExecutedDate } from '../../api/checkNewDay.js';
 import { addQuizDB, fetchQuizList, removeQuizDB, updateQuizDB } from '../../api/quiz.js';
 
 const initialState = {
   quizList: [],
   quizStatus: '...Loading',
+  lastExecutedDate: null,
 };
 
 const quizSlice = createSlice({
@@ -44,7 +46,9 @@ const quizSlice = createSlice({
       })
       .addCase(initQuizList.fulfilled, (state, { payload }) => {
         state.quizStatus = '取得済み';
-        state.quizList = payload;
+        const { quizList, lastExecutedDate } = payload;
+        state.quizList = quizList;
+        state.lastExecutedDate = lastExecutedDate;
       })
       .addCase(initQuizList.rejected, (state) => {
         state.quizStatus = 'データの取得に失敗しました。';
@@ -54,7 +58,12 @@ const quizSlice = createSlice({
 
 const { add, remove, update } = quizSlice.actions;
 
-const initQuizList = createAsyncThunk('quizSlice/asyncInit', async () => await fetchQuizList());
+const initQuizList = createAsyncThunk('quizSlice/asyncInit', async () => {
+  const quizList = await fetchQuizList();
+  const lastExecutedDate = await getLastExecutedDate();
+  // console.log(`${lastExecutedDate}--quizSlice/asyncInit`);
+  return { quizList, lastExecutedDate };
+});
 
 export { add, remove, update, initQuizList };
 
