@@ -5,7 +5,7 @@ import React from 'react';
 // TODO: stageを表示
 // TODO: 要素間のスペースを作る
 
-const Quiz = ({ activeQuiz, answer, hasUnAnsweredQuiz }) => {
+const Quiz = ({ activeQuiz, showNextQuiz, answer, hasUnAnsweredQuiz }) => {
   return (
     <>
       <Card maxW="sm">
@@ -38,20 +38,14 @@ const Quiz = ({ activeQuiz, answer, hasUnAnsweredQuiz }) => {
                   variant="solid"
                   // flexBasis={'100'}
                   w={'100%'}
-                  onClick={() => answer(true)}
+                  onClick={showNextQuiz}
                 >
                   未回答の問題を答える
                 </Button>
               </>
             ) : (
               <>
-                <Button
-                  rightIcon={<CheckIcon />}
-                  colorScheme="teal"
-                  isDisabled={true}
-                  w={'100%'}
-                  onClick={() => answer(true)}
-                >
+                <Button rightIcon={<CheckIcon />} colorScheme="teal" isDisabled={true} w={'100%'}>
                   全て回答しました
                 </Button>
               </>
