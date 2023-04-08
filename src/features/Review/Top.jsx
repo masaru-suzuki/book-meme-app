@@ -1,24 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { ButtonBack } from '../../components/ButtonBack';
-import { Button, CircularProgress, CircularProgressLabel } from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react';
 import Quiz from './Quiz';
 import AnswerButtons from './AnswerButtons';
 import { update } from '../../store/modules/quizSlice';
+import { isBeforeToday } from '../../util/isBeforeToday';
 
 const ReviewRoot = ({ backToTop, quizList }) => {
   const dispatch = useDispatch();
-
-  // 今日の日付も含めて、今日よりも前か判定する関数
-  const isBeforeToday = (epochTime) => {
-    const date = new Date(epochTime);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const time = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
-    const todayTime = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
-
-    return time <= todayTime;
-  };
 
   // 今日復習するquizの配列を生成
   // 今日より前に復習日だった問題を格納=今日回答するべきクイズ
@@ -66,14 +56,6 @@ const ReviewRoot = ({ backToTop, quizList }) => {
   // 表示しているクイズ
   const activeQuiz = reviewQuizList[quizIndex] || reviewQuizList[quizIndex - 1];
 
-  // console.log({ hasUnAnsweredQuiz });
-  // console.log(answeredQuizList);
-  // console.log({ totalAnsweredQuiz });
-  // console.log({ unAnsweredQuizIndex });
-  // console.log({ quizIndex });
-  // console.log({ showQuizIndex });
-  // console.log({ activeQuiz });
-
   const answer = (isCorrect) => {
     setAnswerFlag((prev) => !prev);
 
@@ -83,10 +65,8 @@ const ReviewRoot = ({ backToTop, quizList }) => {
     } else {
       // isCorrectによって処理を分ける
       if (isCorrect) {
-        console.log('正解');
         updatedQuiz.stage += 1;
       } else {
-        console.log('不正解');
         updatedQuiz.stage = updatedQuiz.stage - 1 < 0 ? 0 : updatedQuiz.stage - 1;
       }
     }

@@ -8,6 +8,8 @@ import { HiOutlineBookOpen } from 'react-icons/hi';
 import { useSelector } from 'react-redux';
 import { checkAndExecute, updateLastExecutedDate } from '../../api/checkNewDay';
 import { update } from '../../store/modules/quizSlice';
+import { convertEpochTimeToDateString } from '../../util/convertEpochTimeToDateString';
+import { getReviewDate } from '../../util/getReviewDate';
 
 const CustomBookIcon = () => <Icon as={HiOutlineBookOpen} width="24px" height="24px" opacity="0.8" />;
 
@@ -17,24 +19,6 @@ const Top = () => {
   const { quizStatus, quizList, lastExecutedDate } = useSelector((state) => state.quiz);
   const [rootFlag, setRootFlag] = useState('');
   const backToTop = () => setRootFlag('');
-  // console.log({ lastExecutedDate });
-
-  // 検証用: エポックタイムからyyyy/dd/mmの文字列に変換する関数
-  const convertEpochTimeToDateString = (epochTime) => {
-    const dateObj = new Date(epochTime);
-    const year = dateObj.getFullYear();
-    const month = ('0' + (dateObj.getMonth() + 1)).slice(-2);
-    const date = ('0' + dateObj.getDate()).slice(-2);
-    return year + '/' + month + '/' + date;
-  };
-
-  // 復習日を取得する関数
-  // 起算点は前回の復習日
-  const getReviewDate = (stage) => {
-    const daysToAdd = Math.pow(2, stage);
-    const newReviewDate = new Date(new Date(lastExecutedDate).getTime() + daysToAdd * 24 * 60 * 60 * 1000);
-    return newReviewDate.getTime();
-  };
 
   // 問題の出題スケジュールを更新する関数
   const updateReviewDate = () => {
@@ -48,7 +32,7 @@ const Top = () => {
         // isAnsweredがtrueの場合
         if (updatedQuiz.isAnswered) {
           // reviewDateを最後の復習日を起点に更新する
-          updatedQuiz.reviewDate = getReviewDate(updatedQuiz.stage);
+          updatedQuiz.reviewDate = getReviewDate(updatedQuiz.stage, lastExecutedDate);
           // isAnsweredをfalseにする
           updatedQuiz.isAnswered = false;
         } else {
@@ -75,6 +59,7 @@ const Top = () => {
     console.log('1日1回だけ実行する関数を実行しました');
     // DBのクイズのstateを更新する
     await updateReviewDate();
+
     // DBのlastExecutedDateを更新する
     updateLastExecutedDate();
     console.log('1日1回だけ実行する関数が完了しました');
@@ -95,7 +80,6 @@ const Top = () => {
       updatedQuiz.stage = 0;
       updatedQuiz.isAnswered = false;
       updatedQuiz.reviewDate = getReviewDate(updatedQuiz.stage);
-      // dispatch(update(updatedQuiz));
     });
   };
 
