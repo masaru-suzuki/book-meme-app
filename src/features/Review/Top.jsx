@@ -1,28 +1,13 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { ButtonBack } from '../../components/ButtonBack';
 import { Button, CircularProgress, CircularProgressLabel } from '@chakra-ui/react';
 import Quiz from './Quiz';
 import AnswerButtons from './AnswerButtons';
 import { update } from '../../store/modules/quizSlice';
 
-const ReviewRoot = ({ backToTop }) => {
+const ReviewRoot = ({ backToTop, quizList }) => {
   const dispatch = useDispatch();
-  // stateはなるべく少なくする=>管理する対象が多くなると処理が複雑になる
-  const { status, quizList } = useSelector((state) => state.quiz);
-
-  //TODO: 1日の終わりに、クイズを更新したい。→毎日の0時に、クイズを更新するようにする
-  // それまでは今日の復習するクイズを表示できるようにする
-  // localStorageに、最終更新日を保存して制御する？
-
-  // 検証用: エポックタイムからyyyy/dd/mmの文字列に変換する関数
-  const convertEpochTimeToDateString = (epochTime) => {
-    const dateObj = new Date(epochTime);
-    const year = dateObj.getFullYear();
-    const month = ('0' + (dateObj.getMonth() + 1)).slice(-2);
-    const date = ('0' + dateObj.getDate()).slice(-2);
-    return year + '/' + month + '/' + date;
-  };
 
   // 今日の日付も含めて、今日よりも前か判定する関数
   const isBeforeToday = (epochTime) => {
@@ -30,8 +15,6 @@ const ReviewRoot = ({ backToTop }) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const time = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
-    // console.log(convertEpochTimeToDateString(time));
-
     const todayTime = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
 
     return time <= todayTime;
@@ -110,17 +93,6 @@ const ReviewRoot = ({ backToTop }) => {
 
     console.log(updatedQuiz.stage);
 
-    // 復習日を取得する関数
-    const getReviewDate = (stage) => {
-      const today = new Date();
-      const daysToAdd = Math.pow(2, stage);
-      const newReviewDate = new Date(today.getTime() + daysToAdd * 24 * 60 * 60 * 1000);
-      return newReviewDate.getTime();
-    };
-
-    // 復習日を更新
-    updatedQuiz.reviewDate = getReviewDate(updatedQuiz.stage);
-
     // isAnsweredをtrueに更新
     updatedQuiz.isAnswered = true;
 
@@ -157,7 +129,12 @@ const ReviewRoot = ({ backToTop }) => {
         <>
           <ButtonBack label="TOP" cb={backToTop} />
           <Button onClick={resetIsAnswered}>reset</Button>
-          <Quiz activeQuiz={activeQuiz} answer={answer} hasUnAnsweredQuiz={hasUnAnsweredQuiz} />
+          <Quiz
+            activeQuiz={activeQuiz}
+            showNextQuiz={showNextQuiz}
+            answer={answer}
+            hasUnAnsweredQuiz={hasUnAnsweredQuiz}
+          />
           <AnswerButtons
             totalAnsweredQuiz={totalAnsweredQuiz}
             quizIndex={quizIndex}
