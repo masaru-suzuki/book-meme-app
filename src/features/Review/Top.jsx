@@ -80,6 +80,7 @@ const ReviewRoot = ({ backToTop, quizList }) => {
     dispatch(update(updatedQuiz));
   };
 
+  // 検証用に、isAnsweredをfalseに更新する関数
   const resetIsAnswered = () => {
     reviewQuizList.map((quiz) => {
       const resetQuiz = { ...quiz };
@@ -87,6 +88,14 @@ const ReviewRoot = ({ backToTop, quizList }) => {
       console.log(resetQuiz);
       dispatch(update(resetQuiz));
     });
+  };
+
+  // 未回答のクイズを表示
+  const showUnAnsweredQuiz = () => {
+    if (hasUnAnsweredQuiz) {
+      setQuizIndex(unAnsweredQuizIndex);
+      setShowQuizIndex(totalAnsweredQuiz);
+    }
   };
 
   // 次のクイズを表示
@@ -111,7 +120,7 @@ const ReviewRoot = ({ backToTop, quizList }) => {
           <Button onClick={resetIsAnswered}>reset</Button>
           <Quiz
             activeQuiz={activeQuiz}
-            showNextQuiz={showNextQuiz}
+            showUnAnsweredQuiz={showUnAnsweredQuiz}
             answer={answer}
             hasUnAnsweredQuiz={hasUnAnsweredQuiz}
           />
